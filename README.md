@@ -1,2 +1,3 @@
-# reakeys
-⌨️ React Hotkeys Hook
+# ⌨️ React Hotkeys Hook
+
+React Hook for Mousetrap
