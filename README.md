@@ -1,7 +1,7 @@
 <p align="center">
   <h1>⌨️ reakeys</h1>
   <br />
-  React Hook for [Mousetrap](https://www.npmjs.com/package/mousetrap)
+  React Hook for Mousetrap
   <br /><br />
   <a href="https://npm.im/realayers">
     <img src="https://img.shields.io/npm/v/reakeys.svg" />
