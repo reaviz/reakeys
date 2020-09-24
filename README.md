@@ -1,7 +1,12 @@
 # ⌨️ React Hotkeys Hook
 React Hook for [Mousetrap](https://www.npmjs.com/package/mousetrap)
 
-## Usage
+## 🚀 Quick Links
+
+- Checkout the [demos](https://chromatic.com/library?appId=5f6c9043bb0f530022c5df01&branch=master)
+
+## 📦 Usage
+
 Install via NPM:
 
 ```
