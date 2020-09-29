@@ -1,5 +1,23 @@
-# ⌨️ React Hotkeys Hook
-React Hook for [Mousetrap](https://www.npmjs.com/package/mousetrap)
+<p align="center">
+  <h1>⌨️ reakeys</h1>
+  <br />
+  React Hook for Mousetrap
+  <br /><br />
+  <a href="https://npm.im/realayers">
+    <img src="https://img.shields.io/npm/v/reakeys.svg" />
+  </a>
+  <a href="https://npm.im/realayers">
+    <img src="https://badgen.net/npm/dw/reakeys" />
+  </a>
+  <a href="https://github.com/realayers/reakeys/blob/master/LICENSE">
+    <img src="https://badgen.now.sh/badge/license/apache2" />
+  </a>
+  <a href="https://bundlephobia.com/result?p=reakeys">
+    <img src="https://badgen.net/bundlephobia/minzip/reakeys">
+  </a>
+</p>
+
+---
 
 ## 🚀 Quick Links
 
