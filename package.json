@@ -1,6 +1,6 @@
 {
   "name": "reakeys",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React Hotkeys Hooks using MouseTrap",
   "scripts": {
     "build": "rollup -c",
@@ -35,8 +35,7 @@
   },
   "homepage": "https://github.com/reaviz/reakeys#readme",
   "dependencies": {
-    "mousetrap": "^1.6.5",
-    "react-use": "15.3.4"
+    "mousetrap": "^1.6.5"
   },
   "peerDependencies": {
     "react": ">=16",
