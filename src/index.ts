@@ -1,2 +1,2 @@
 export * from './useHotkeys';
-export * from './state';
+export * from './useHotkeyState';

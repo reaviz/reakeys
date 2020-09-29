@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import { HotkeyShortcuts, useHotkeyState } from './state';
+import { useLayoutEffect } from 'react';
+import { HotkeyShortcuts, useHotkeyState } from './useHotkeyState';
 
 export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
   const [keys, addKeys, removeKeys] = useHotkeyState();
