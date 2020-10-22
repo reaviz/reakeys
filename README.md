@@ -1,7 +1,7 @@
 <p align="center">
   <h1>⌨️ reakeys</h1>
   <br />
-  React Hook for Mousetrap
+  React Hook for Mousetrap Hotkeys
   <br /><br />
   <a href="https://github.com/reaviz/reakeys/workflows/build/">
     <img src="https://github.com/reaviz/reakeys/workflows/build/badge.svg?branch=master" />
