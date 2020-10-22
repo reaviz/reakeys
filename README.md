@@ -3,10 +3,13 @@
   <br />
   React Hook for Mousetrap
   <br /><br />
-  <a href="https://npm.im/realayers">
+  <a href="https://github.com/reaviz/reakeys/workflows/build/">
+    <img src="https://github.com/reaviz/reakeys/workflows/build/badge.svg?branch=master" />
+  </a>
+  <a href="https://npm.im/reakeys">
     <img src="https://img.shields.io/npm/v/reakeys.svg" />
   </a>
-  <a href="https://npm.im/realayers">
+  <a href="https://npm.im/reakeys">
     <img src="https://badgen.net/npm/dw/reakeys" />
   </a>
   <a href="https://github.com/realayers/reakeys/blob/master/LICENSE">
