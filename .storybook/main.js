@@ -1,6 +1,14 @@
 module.exports = {
   stories: ['../src/**/*.story.tsx'],
   addons: [
-    '@storybook/preset-scss'
+    {
+      name: '@storybook/preset-scss',
+      options: {
+        cssLoaderOptions: {
+          modules: true
+        }
+      }
+    },
+    '@storybook/addon-storysource'
   ]
 };
