@@ -18,6 +18,9 @@
   <a href="https://bundlephobia.com/result?p=reakeys">
     <img src="https://badgen.net/bundlephobia/minzip/reakeys">
   </a>
+  <a href="https://join.slack.com/t/reaviz-community/shared_invite/zt-ivv6eh0g-WCrq0MjBlM0iGgBQZM3ESg">
+    <img src="https://img.shields.io/badge/slack-chat-green.svg">
+  </a>
 </p>
 
 ---
