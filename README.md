@@ -78,4 +78,103 @@ const hotkeys = useHotkeys();
 ```
 
 This is useful for creating a dialog to present the user
-with all the options.
+with all the options. Below is an example of how to make
+a dialog using realayers:
+
+```jsx
+import React, { useState, FC, useCallback } from 'react';
+import { Dialog } from 'shared/Dialog';
+import { useHotkeys } from 'reakeys';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
+
+const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+
+export const HotkeyCombos: FC = () => {
+  const hotkeys = useHotkeys();
+  const categories = groupBy(hotkeys, 'category');
+
+  const sorted = Object.keys(categories).reduce((prev, cur) => {
+    const category = sortBy(categories[cur], 'name');
+    const label = cur === 'undefined' ? 'General' : cur;
+
+    return {
+      ...prev,
+      [label]: category.filter(k => !k.hidden)
+    };
+  }, {});
+
+  const { General, ...rest } = sorted as any;
+  const others = sortBy(Object.keys(rest || {}));
+
+  const renderKeyCode = useCallback(keyCode => {
+    const wrapped = Array.isArray(keyCode) ? keyCode : [keyCode];
+    const formatted = wrapped.map(k => k.replace('mod', isMac ? '⌘' : 'CTRL'));
+
+    return (
+      <div className={css.keyComboContainer}>
+        {formatted.map((k, i) => (
+          <kbd key={i} className={css.keyCombo}>
+            {k}
+          </kbd>
+        ))}
+      </div>
+    );
+  }, []);
+
+  const renderGroups = useCallback(
+    group => {
+      if (!sorted[group]) {
+        return null;
+      }
+
+      return (
+        <div key={group}>
+          <h3>{group}</h3>
+          <ul className={css.list}>
+            {sorted[group].map(kk => (
+              <li key={kk.name} className={css.listItem}>
+                <label>{kk.name}</label>
+                {renderKeyCode(kk.keys)}
+                {kk.description && <p>{kk.description}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    },
+    [renderKeyCode, sorted]
+  );
+
+  return (
+    <div className={css.groups}>
+      {renderGroups('General')}
+      {others.map(renderGroups)}
+    </div>
+  );
+};
+
+export const HotkeyDialog: FC = () => {
+  const [visible, setVisible] = useState<boolean>(false);
+
+  useHotkeys([
+    {
+      name: 'Hotkey Dialog',
+      keys: 'SHIFT+?',
+      hidden: true,
+      callback: () => setVisible(true)
+    }
+  ]);
+
+  return (
+    <Dialog
+      size="800px"
+      header="Hotkeys"
+      open={visible}
+      onClose={() => setVisible(false)}
+    >
+      {() => <HotkeyCombos />}
+    </Dialog>
+  );
+};
+```
