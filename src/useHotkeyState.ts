@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Mousetrap from 'mousetrap';
+import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
@@ -13,22 +13,17 @@ export type HotkeyShortcuts = {
 
 /**
  * Creates a global state singleton.
- * Ref: https://stackoverflow.com/questions/57602715/react-custom-hooks-fetch-data-globally-and-share-across-components
  */
-const createStateHook = (initialVal = []) => {
-  let keys: HotkeyShortcuts[] = initialVal;
-  let observers: React.Dispatch<React.SetStateAction<HotkeyShortcuts[]>>[] = [];
+const createStateHook = () => {
+  let keys: HotkeyShortcuts[] = [];
 
   const addKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = [...keys, ...nextKeys];
 
     nextKeys.forEach((k) => {
       const mousetrap = k.ref?.current ? Mousetrap(k.ref.current) : Mousetrap;
-
       mousetrap.bind(k.keys, k.callback);
     });
-
-    observers.forEach((update) => update(keys));
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
@@ -37,28 +32,21 @@ const createStateHook = (initialVal = []) => {
     nextKeys.forEach((s) => {
       Mousetrap.unbind(s.keys);
     });
-
-    observers.forEach((update) => update(keys));
   };
 
   return () => {
-    const [keysState, setKeysState] = useState<HotkeyShortcuts[]>(keys);
+    const [state, setState] = useState<HotkeyShortcuts[]>([]);
 
     useEffect(() => {
-      observers.push(setKeysState);
-      setKeysState(keys);
+      setState(keys);
+    }, [])
 
-      return () => {
-        observers = observers.filter((update) => update !== setKeysState);
-      };
-    }, [keysState]);
-
-    return [keys, addKeys, removeKeys] as [
+    return [state, addKeys, removeKeys] as [
       HotkeyShortcuts[],
       (keys: HotkeyShortcuts[]) => void,
       (keys: HotkeyShortcuts[]) => void
     ];
-  };
+  }
 };
 
 export const useHotkeyState = createStateHook();

@@ -1,8 +1,59 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
-import { useRef } from '@storybook/addons';
+
+export default {
+  title: 'Hotkeys'
+};
 
 export const Simple = () => {
+  const hotkeys = useHotkeys([
+    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
+  ]);
+
+  return (
+    <div>
+      Press SHIFT + A<br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+export const Refs = () => {
+  const [color, setColor] = useState('blue');
+
+  const hotkeys = useHotkeys([
+    {
+      name: 'Test',
+      keys: 'SHIFT+A',
+      callback: () => {
+        alert(`color: ${color}`);
+      }
+    }
+  ]);
+
+  return (
+    <div>
+      Press SHIFT + A<br />
+      Color: {color}<br />
+      <button type="button" onClick={() => setColor('yellow')}>Change Color</button>
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+export const Multiple = () => {
   const hotkeys = useHotkeys([
     { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
   ]);
@@ -15,6 +66,35 @@ export const Simple = () => {
     <div>
       Press SHIFT + A<br />
       Press MOD + b<br />
+      <br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+const NestedComponent = () => {
+  useHotkeys([
+    { name: 'Test 2', keys: 'mod+b', callback: () => alert('baller') },
+  ]);
+
+  return <h1>Press MOD + b</h1>;
+};
+
+export const Nested = () => {
+  const hotkeys = useHotkeys([
+    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
+  ]);
+
+  return (
+    <div>
+      Press SHIFT + A<br />
+      <NestedComponent /><br />
       <br />
       <pre>
         {JSON.stringify(
@@ -69,9 +149,4 @@ export const Focus = () => {
       </pre>
     </div>
   );
-};
-
-export default {
-  title: 'Hotkeys',
-  component: null,
 };
