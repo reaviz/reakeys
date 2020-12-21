@@ -6,8 +6,8 @@
     "build": "rollup -c",
     "test": "jest --env=jsdom",
     "prettier": "prettier --loglevel warn --write 'src/**/*.{ts,tsx,js,jsx}'",
-    "start": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
+    "start": "start-storybook -p 9009",
+    "build-storybook": "build-storybook",
     "chromatic": "npx chromatic --project-token 7cu2w5t1r8a --auto-accept-changes"
   },
   "source": "src/index.ts",
