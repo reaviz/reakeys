@@ -70,6 +70,7 @@ type HotkeyShortcuts = {
   ref?: any;
   hidden?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
+  action?: 'keypress'| 'keydown'| 'keyup';
 }
 ```
 

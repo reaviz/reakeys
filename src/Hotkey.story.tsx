@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
 
 export default {
-  title: 'Hotkeys'
+  title: 'Hotkeys',
 };
 
 export const Simple = () => {
@@ -33,15 +33,18 @@ export const Refs = () => {
       keys: 'SHIFT+A',
       callback: () => {
         alert(`color: ${color}`);
-      }
-    }
+      },
+    },
   ]);
 
   return (
     <div>
       Press SHIFT + A<br />
-      Color: {color}<br />
-      <button type="button" onClick={() => setColor('yellow')}>Change Color</button>
+      Color: {color}
+      <br />
+      <button type="button" onClick={() => setColor('yellow')}>
+        Change Color
+      </button>
       <pre>
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
@@ -94,7 +97,8 @@ export const Nested = () => {
   return (
     <div>
       Press SHIFT + A<br />
-      <NestedComponent /><br />
+      <NestedComponent />
+      <br />
       <br />
       <pre>
         {JSON.stringify(
@@ -139,6 +143,31 @@ export const Focus = () => {
       <span ref={elmRef2} tabIndex={-1}>
         focus me and press SHIFT+C
       </span>
+      <br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+export const Action = () => {
+  const hotkeys = useHotkeys([
+    {
+      name: 'Pay respects',
+      keys: 'f',
+      callback: (e) => alert("You've been promoted!"),
+      action: 'keyup',
+    },
+  ]);
+
+  return (
+    <div>
+      Press f to pay respects
       <br />
       <pre>
         {JSON.stringify(
