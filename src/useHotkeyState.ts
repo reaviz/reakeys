@@ -8,6 +8,7 @@ export type HotkeyShortcuts = {
   keys: string | string[];
   ref?: any;
   hidden?: boolean;
+  disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
 };
 
@@ -21,17 +22,16 @@ const createStateHook = () => {
     keys = [...keys, ...nextKeys];
 
     nextKeys.forEach((k) => {
-      const mousetrap = k.ref?.current ? Mousetrap(k.ref.current) : Mousetrap;
-      mousetrap.bind(k.keys, k.callback);
+      if (!k.disabled) {
+        const mousetrap = k.ref?.current ? Mousetrap(k.ref.current) : Mousetrap;
+        mousetrap.bind(k.keys, k.callback);
+      }
     });
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
-
-    nextKeys.forEach((s) => {
-      Mousetrap.unbind(s.keys);
-    });
+    nextKeys.forEach((s) => Mousetrap.unbind(s.keys));
   };
 
   return () => {
@@ -39,14 +39,14 @@ const createStateHook = () => {
 
     useEffect(() => {
       setState(keys);
-    }, [])
+    }, []);
 
     return [state, addKeys, removeKeys] as [
       HotkeyShortcuts[],
       (keys: HotkeyShortcuts[]) => void,
       (keys: HotkeyShortcuts[]) => void
     ];
-  }
+  };
 };
 
 export const useHotkeyState = createStateHook();
