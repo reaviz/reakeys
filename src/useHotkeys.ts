@@ -16,10 +16,14 @@ export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
     };
   }, [shortcuts]);
 
-  return useMemo(keys.reduce((agg, cur) => {
-    if (!agg.find((a) => a.keys === cur.keys && a.ref && cur.ref)) {
-      agg.push(cur);
-    }
-    return agg;
-  }, []), [keys]);
+  return useMemo(
+    () =>
+      keys.reduce((agg, cur) => {
+        if (!agg.find((a) => a.keys === cur.keys && a.ref && cur.ref)) {
+          agg.push(cur);
+        }
+        return agg;
+      }, []),
+    [keys]
+  );
 };
