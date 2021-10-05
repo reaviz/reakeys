@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState, useMemo } from 'react';
-import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
+import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance, MousetrapStatic } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
@@ -14,7 +14,7 @@ export type HotkeyShortcuts = {
 
 const mousetraps: WeakMap<HTMLElement, MousetrapInstance> = new WeakMap();
 
-const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstance => {
+const getMousetrap = (element: HTMLElement | null | undefined) => {
   if (element) {
     let mousetrap = mousetraps.get(element);
     
@@ -27,7 +27,7 @@ const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstanc
   }
   
   return Mousetrap;
-}
+} as ((element: HTMLElement) => MousetrapInstance) | ((element: null | undefined) => MousetrapStatic)
 
 /**
  * Creates a global state singleton.
