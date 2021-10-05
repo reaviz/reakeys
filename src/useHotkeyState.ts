@@ -12,7 +12,7 @@ export type HotkeyShortcuts = {
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
 };
 
-const mousetraps: WeakMap<HTMLElement, Mousetrap> = new WeakMap();
+const mousetraps: WeakMap<HTMLElement, typeof Mousetrap> = new WeakMap();
 
 const getMousetrap = (element: HTMLElement | null | undefined) => {
   if (element) {
