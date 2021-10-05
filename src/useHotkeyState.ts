@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState, useMemo } from 'react';
-import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap';
+import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
@@ -12,9 +12,9 @@ export type HotkeyShortcuts = {
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
 };
 
-const mousetraps: WeakMap<HTMLElement, typeof Mousetrap> = new WeakMap();
+const mousetraps: WeakMap<HTMLElement, MousetrapInstance> = new WeakMap();
 
-const getMousetrap = (element: HTMLElement | null | undefined) => {
+const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstance => {
   if (element) {
     let mousetrap = mousetraps.get(element);
     
