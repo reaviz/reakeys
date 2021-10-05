@@ -14,7 +14,7 @@ export type HotkeyShortcuts = {
 
 const mousetraps: WeakMap<HTMLElement, Mousetrap> = new WeakMap();
 
-const getMousetrap(element: HTMLElement | null | undefined) {
+const getMousetrap = (element: HTMLElement | null | undefined) => {
   if (element) {
     let mousetrap = mousetraps.get(element);
     
