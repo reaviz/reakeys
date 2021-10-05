@@ -14,7 +14,7 @@ export type HotkeyShortcuts = {
 
 const mousetraps: WeakMap<HTMLElement, MousetrapInstance> = new WeakMap();
 
-const getMousetrap = ((element: HTMLElement | null | undefined) => {
+const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstance | MousetrapStatic => {
   if (element) {
     let mousetrap = mousetraps.get(element);
     
@@ -27,7 +27,7 @@ const getMousetrap = ((element: HTMLElement | null | undefined) => {
   }
   
   return Mousetrap;
-}) as ((element: HTMLElement) => MousetrapInstance) | ((element: null | undefined) => MousetrapStatic)
+}
 
 /**
  * Creates a global state singleton.
