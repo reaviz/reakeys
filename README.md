@@ -73,8 +73,9 @@ type HotkeyShortcuts = {
 }
 ```
 
-You can also get all the hotkeys that registered by just calling
-the `useHotkeys` hook and it will return the current hotkeys.
+You can also get all the hotkeys that are registered by just
+calling the `useHotkeys` hook and it will return the current
+hotkeys.
 
 ```ts
 const hotkeys = useHotkeys();
@@ -85,7 +86,7 @@ with all the options. Below is an example of how to make
 a dialog using realayers:
 
 ```jsx
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useMemo } from 'react';
 import { Dialog } from 'shared/Dialog';
 import { useHotkeys } from 'reakeys';
 import groupBy from 'lodash/groupBy';
@@ -94,10 +95,20 @@ import sortBy from 'lodash/sortBy';
 const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
 export const HotkeyCombos: FC = () => {
-  const hotkeys = useHotkeys();
-  const categories = groupBy(hotkeys, 'category');
+  // useHotkeys returns the same object if the hotkeys haven't changed, meaning
+  // that you can use useMemo to avoid expensive recalculation in that case.
+  //
+  // Note that the object will change if another component passes a different
+  // object to their useHotkeys, even if that component doesn't actually change
+  // anything. In React <18, it will cause two re-renders in a row.
+  //
+  // There is another long comment at the bottom of this example explaining why
+  // useMemo is important.
 
-  const sorted = Object.keys(categories).reduce((prev, cur) => {
+  const hotkeys = useHotkeys();
+  const categories = useMemo(() => groupBy(hotkeys, 'category'), [hotkeys]);
+
+  const sorted = useMemo(() => Object.keys(categories).reduce((prev, cur) => {
     const category = sortBy(categories[cur], 'name');
     const label = cur === 'undefined' ? 'General' : cur;
 
@@ -105,7 +116,7 @@ export const HotkeyCombos: FC = () => {
       ...prev,
       [label]: category.filter(k => !k.hidden)
     };
-  }, {});
+  }, {}), [categories]);
 
   const { General, ...rest } = sorted as any;
   const others = sortBy(Object.keys(rest || {}));
@@ -159,24 +170,39 @@ export const HotkeyCombos: FC = () => {
 
 export const HotkeyDialog: FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
+  const openDialog = useCallback(() => setVisible(true), [setVisible]);
+  const closeDialog = useCallback(() => setVisible(false), [setVisible]);
 
-  useHotkeys([
+  // If your hotkeys haven't changed, it's important to provide the same object
+  // to useHotkeys, or else it will remove and replace your hotkeys.
+  //
+  // That isn't always a bad thing, and works perfectly fine, but it would cause
+  // unnecessary updates if other components also call useHotkeys() to retrieve
+  // the list of hotkeys, because this component would update it every render.
+  //
+  // Ideally, you should only change the object passed to useHotkeys when the
+  // actual hotkeys have changed (name for instance, when using i18n).
+  // useMemo is good for this.
+
+  useHotkeys(useMemo(() => [
     {
       name: 'Hotkey Dialog',
       keys: 'SHIFT+?',
       hidden: true,
-      callback: () => setVisible(true)
+      callback: openDialog
     }
-  ]);
+  ], [openDialog]));
+
+  const combosRenderer = useCallback(() => <HotkeyCombos />, [HotkeyCombos]);
 
   return (
     <Dialog
       size="800px"
       header="Hotkeys"
       open={visible}
-      onClose={() => setVisible(false)}
+      onClose={closeDialog}
     >
-      {() => <HotkeyCombos />}
+      {combosRenderer}
     </Dialog>
   );
 };
