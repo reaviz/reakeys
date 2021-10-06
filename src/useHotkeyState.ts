@@ -10,6 +10,7 @@ export type HotkeyShortcuts = {
   hidden?: boolean;
   disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
+  action?: 'keypress' | 'keydown' | 'keyup';
 };
 
 const mousetraps: WeakMap<HTMLElement, MousetrapInstance> = new WeakMap();
@@ -40,14 +41,14 @@ const createStateHook = () => {
 
     nextKeys.forEach((k) => {
       if (!k.disabled) {
-        getMousetrap(k.ref?.current).bind(k.keys, k.callback);
+        getMousetrap(k.ref?.current).bind(k.keys, k.callback, k.action);
       }
     });
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
-    nextKeys.forEach((s) => Mousetrap.unbind(s.keys));
+    nextKeys.forEach(s => Mousetrap.unbind(s.keys, s.action));
   };
 
   return () => {
