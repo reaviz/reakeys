@@ -85,11 +85,11 @@ const hotkeys = useHotkeys();
 
 This is useful for creating a dialog to present the user
 with all the options. Below is an example of how to make
-a dialog using realayers:
+a dialog using [realayers](https://github.com/reaviz/realayers):
 
 ```jsx
 import React, { useState, FC, useCallback, useMemo } from 'react';
-import { Dialog } from 'shared/Dialog';
+import { Dialog } from 'realayers';
 import { useHotkeys } from 'reakeys';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
