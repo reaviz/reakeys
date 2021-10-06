@@ -69,8 +69,9 @@ type HotkeyShortcuts = {
   keys: string | string[];
   ref?: any;
   hidden?: boolean;
+  disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
-}
+};
 ```
 
 You can also get all the hotkeys that are registered by just
