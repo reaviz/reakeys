@@ -1,17 +1,34 @@
-import { useEffect, useState } from 'react';
-import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap';
+import { RefObject, useEffect, useState, useMemo } from 'react';
+import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance, MousetrapStatic } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
   category?: string;
   description?: string;
   keys: string | string[];
-  ref?: any;
+  ref?: RefObject<HTMLElement | null>;
   hidden?: boolean;
   disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
   action?: 'keypress' | 'keydown' | 'keyup';
 };
+
+const mousetraps: WeakMap<HTMLElement, MousetrapInstance> = new WeakMap();
+
+const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstance | MousetrapStatic => {
+  if (element) {
+    let mousetrap = mousetraps.get(element);
+    
+    if (!mousetrap) {
+      mousetrap = Mousetrap(element);
+      mousetraps.set(element, mousetrap);
+    }
+
+    return mousetrap;
+  }
+  
+  return Mousetrap;
+}
 
 /**
  * Creates a global state singleton.
@@ -24,8 +41,7 @@ const createStateHook = () => {
 
     nextKeys.forEach((k) => {
       if (!k.disabled) {
-        const mousetrap = k.ref?.current ? Mousetrap(k.ref.current) : Mousetrap;
-        mousetrap.bind(k.keys, k.callback, k.action);
+        getMousetrap(k.ref?.current).bind(k.keys, k.callback, k.action);
       }
     });
   };
@@ -36,17 +52,14 @@ const createStateHook = () => {
   };
 
   return () => {
-    const [state, setState] = useState<HotkeyShortcuts[]>([]);
+    const [state, setState] = useState<HotkeyShortcuts[]>(keys);
+    useEffect(() => setState(keys), [keys]);
 
-    useEffect(() => {
-      setState(keys);
-    }, []);
-
-    return [state, addKeys, removeKeys] as [
+    return useMemo(() => [state, addKeys, removeKeys] as [
       HotkeyShortcuts[],
       (keys: HotkeyShortcuts[]) => void,
       (keys: HotkeyShortcuts[]) => void
-    ];
+    ], [state]);
   };
 };
 
