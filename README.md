@@ -209,3 +209,9 @@ export const HotkeyDialog: FC = () => {
   );
 };
 ```
+
+## ❤️ Contributors
+
+Thanks to all our contributors!
+
+<a href="https://github.com/reaviz/reakeys/graphs/contributors"><img src="https://opencollective.com/reaviz/contributors.svg?width=890" /></a>
