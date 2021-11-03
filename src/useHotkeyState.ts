@@ -52,7 +52,7 @@ const createStateHook = () => {
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
-    nextKeys.forEach(s => (shortcutMousetraps.get(s) ?? getMousetrap(s.ref?.current)).unbind(s.keys, s.action));
+    nextKeys.forEach(s => shortcutMousetraps.get(s)?.unbind(s.keys, s.action));
   };
 
   return () => {
