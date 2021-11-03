@@ -37,6 +37,17 @@ const shortcutMousetraps: WeakMap<HotkeyShortcuts, MousetrapInstance | Mousetrap
  */
 const createStateHook = () => {
   let keys: HotkeyShortcuts[] = [];
+  let callbacks: Set<(newKeys: HotkeyShortcuts[]) => void> = new Set();
+  
+  const onChanged = () => {
+    for (const callback of callbacks) {
+      try {
+        callback(keys);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 
   const addKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = [...keys, ...nextKeys];
@@ -48,16 +59,24 @@ const createStateHook = () => {
         mousetrap.bind(k.keys, k.callback, k.action);
       }
     });
+    
+    onChanged();
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
     nextKeys.forEach(s => shortcutMousetraps.get(s)?.unbind(s.keys, s.action));
+    
+    onChanged();
   };
 
   return () => {
     const [state, setState] = useState<HotkeyShortcuts[]>(keys);
-    useEffect(() => setState(keys), [keys]);
+    
+    useEffect(() => {
+      callbacks.add(setState);
+      return () => callbacks.delete(setState);
+    });
 
     return useMemo(() => [state, addKeys, removeKeys] as [
       HotkeyShortcuts[],
