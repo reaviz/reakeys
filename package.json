@@ -1,6 +1,6 @@
 {
   "name": "reakeys",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "React Hotkeys Hooks using MouseTrap",
   "scripts": {
     "build": "rollup -c",
