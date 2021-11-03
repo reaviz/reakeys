@@ -35,6 +35,17 @@ const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstanc
  */
 const createStateHook = () => {
   let keys: HotkeyShortcuts[] = [];
+  let callbacks: Set<(newKeys: HotkeyShortcuts[]) => void> = new Set();
+  
+  const onChanged = () => {
+    for (const callback of callbacks) {
+      try {
+        callback(keys);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 
   const addKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = [...keys, ...nextKeys];
@@ -44,16 +55,24 @@ const createStateHook = () => {
         getMousetrap(k.ref?.current).bind(k.keys, k.callback, k.action);
       }
     });
+    
+    onChanged();
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
     nextKeys.forEach(s => Mousetrap.unbind(s.keys, s.action));
+    
+    onChanged();
   };
 
   return () => {
     const [state, setState] = useState<HotkeyShortcuts[]>(keys);
-    useEffect(() => setState(keys), [keys]);
+    
+    useEffect(() => {
+      callbacks.add(setState);
+      return () => callbacks.delete(setState);
+    });
 
     return useMemo(() => [state, addKeys, removeKeys] as [
       HotkeyShortcuts[],
