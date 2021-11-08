@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap';
 
 export type HotkeyShortcuts = {
@@ -6,7 +6,7 @@ export type HotkeyShortcuts = {
   category?: string;
   description?: string;
   keys: string | string[];
-  ref?: any;
+  ref?: RefObject<HTMLElement | null>;
   hidden?: boolean;
   disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
@@ -32,7 +32,7 @@ const createStateHook = () => {
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
-    nextKeys.forEach(s => Mousetrap.unbind(s.keys, s.action));
+    nextKeys.forEach((s) => Mousetrap.unbind(s.keys, s.action));
   };
 
   return () => {
