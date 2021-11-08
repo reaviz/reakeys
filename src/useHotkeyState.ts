@@ -30,8 +30,6 @@ const getMousetrap = (element: HTMLElement | null | undefined): MousetrapInstanc
   return Mousetrap;
 }
 
-const shortcutMousetraps: WeakMap<HotkeyShortcuts, MousetrapInstance | MousetrapStatic> = new WeakMap();
-
 /**
  * Creates a global state singleton.
  */
@@ -43,16 +41,14 @@ const createStateHook = () => {
 
     nextKeys.forEach((k) => {
       if (!k.disabled) {
-        const mousetrap = getMousetrap(k.ref?.current);
-        shortcutMousetraps.set(k, mousetrap);
-        mousetrap.bind(k.keys, k.callback, k.action);
+        getMousetrap(k.ref?.current).bind(k.keys, k.callback, k.action);
       }
     });
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = keys.filter((k) => !nextKeys.includes(k));
-    nextKeys.forEach(s => shortcutMousetraps.get(s)?.unbind(s.keys, s.action));
+    nextKeys.forEach(s => Mousetrap.unbind(s.keys, s.action));
   };
 
   return () => {
