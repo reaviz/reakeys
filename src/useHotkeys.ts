@@ -1,4 +1,4 @@
-import { createRef, useLayoutEffect, useRef, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { HotkeyShortcuts, useHotkeyState } from './useHotkeyState';
 
 export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
@@ -18,7 +18,7 @@ export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
 
   return useMemo(
     () =>
-      keys.reduce((agg, cur) => {
+      keys.reduce<HotkeyShortcuts[]>((agg, cur) => {
         if (!agg.find((a) => a.keys === cur.keys && a.ref && cur.ref)) {
           agg.push(cur);
         }

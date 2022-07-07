@@ -42,11 +42,7 @@ const createStateHook = () => {
       setState(keys);
     }, []);
 
-    return [state, addKeys, removeKeys] as [
-      HotkeyShortcuts[],
-      (keys: HotkeyShortcuts[]) => void,
-      (keys: HotkeyShortcuts[]) => void
-    ];
+    return [state, addKeys, removeKeys] as const;
   };
 };
 

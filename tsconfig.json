@@ -26,7 +26,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "suppressExcessPropertyErrors": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "strict": true
   },
   "types": ["node"],
   "include": ["src/**/*", "demo/**/*", "types/*"],
