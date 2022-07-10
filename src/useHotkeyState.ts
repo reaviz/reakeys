@@ -31,24 +31,31 @@ const createStateHook = () => {
     keys = [...keys, ...nextKeys];
 
     nextKeys.forEach((k) => {
-      if (k.ref && !k.ref.current) {
-        // exit early if ref is provided but null
-        // we do not want to attach global event handlers in this case
-        return;
-      }
-
       if (k.disabled) {
         return;
       }
 
-      const element = k.ref?.current ?? undefined;
+      if (k.ref) {
+        if (!k.ref.current) {
+          // exit early if ref is provided but null
+          // we do not want to attach global event handlers in this case
+          return;
+        }
 
-      if (!mousetraps.has(element)) {
-        mousetraps.set(element, new Mousetrap(element));
+        const element = k.ref.current;
+
+        if (!mousetraps.has(element)) {
+          mousetraps.set(element, new Mousetrap(element));
+        }
+
+        mousetraps.get(element)!.bind(k.keys, k.callback, k.action);
+      } else {
+        if (!mousetraps.get(undefined)) {
+          mousetraps.set(undefined, Mousetrap);
+        }
+
+        mousetraps.get(undefined)!.bind(k.keys, k.callback, k.action);
       }
-
-      const mousetrap = mousetraps.get(element)!;
-      mousetrap.bind(k.keys, k.callback, k.action);
     });
   };
 
@@ -58,21 +65,27 @@ const createStateHook = () => {
 
     // unbind mousetrap events
     nextKeys.forEach((k) => {
-      const element = k.ref?.current ?? undefined;
-      const mousetrap = mousetraps.get(element)!;
-      mousetrap.unbind(k.keys, k.action);
+      if (k.ref) {
+        if (!k.ref.current) {
+          return;
+        }
+
+        mousetraps.get(k.ref.current)?.unbind(k.keys, k.action);
+      } else {
+        mousetraps.get(undefined)?.unbind(k.keys, k.action);
+      }
     });
 
     // drop mousetrap instances that became unused
     for (const [element] of mousetraps) {
-      if (
-        keys.some((k) => {
-          const kElement = k.ref ? k.ref.current : undefined;
-          return kElement === element;
-        })
-      ) {
-        // do not drop if there's at least one key that's still relying on this instance
-        continue;
+      if (element === undefined) {
+        if (keys.some((k) => k.ref === undefined)) {
+          continue;
+        }
+      } else {
+        if (keys.some((k) => k.ref?.current === element)) {
+          continue;
+        }
       }
 
       mousetraps.delete(element);
