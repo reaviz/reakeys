@@ -21,10 +21,7 @@ export type HotkeyShortcuts = {
  * Creates a global state singleton.
  */
 const createStateHook = () => {
-  const mousetraps = new Map<
-    HTMLElement | undefined,
-    MousetrapStatic | MousetrapInstance
-  >();
+  const mousetraps = new Map<HTMLElement | undefined, MousetrapInstance>();
   let keys: HotkeyShortcuts[] = [];
 
   const addKeys = (nextKeys: HotkeyShortcuts[]) => {
