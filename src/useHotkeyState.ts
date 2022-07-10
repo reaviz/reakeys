@@ -1,9 +1,5 @@
 import { RefObject, useEffect, useState } from 'react';
-import Mousetrap, {
-  ExtendedKeyboardEvent,
-  MousetrapInstance,
-  MousetrapStatic,
-} from 'mousetrap';
+import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
