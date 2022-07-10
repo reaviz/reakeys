@@ -51,7 +51,7 @@ const createStateHook = () => {
         mousetraps.get(element)!.bind(k.keys, k.callback, k.action);
       } else {
         if (!mousetraps.get(undefined)) {
-          mousetraps.set(undefined, Mousetrap);
+          mousetraps.set(undefined, new Mousetrap());
         }
 
         mousetraps.get(undefined)!.bind(k.keys, k.callback, k.action);
@@ -76,7 +76,7 @@ const createStateHook = () => {
       }
     });
 
-    // drop mousetrap instances that became unused
+    // drop mousetrap instances that have no keys attached anymore
     for (const [element] of mousetraps) {
       if (element === undefined) {
         if (keys.some((k) => k.ref === undefined)) {
