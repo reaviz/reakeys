@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState } from 'react';
-import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap';
+import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
 
 export type HotkeyShortcuts = {
   name: string;
@@ -17,22 +17,72 @@ export type HotkeyShortcuts = {
  * Creates a global state singleton.
  */
 const createStateHook = () => {
+  const mousetraps = new Map<HTMLElement | undefined, MousetrapInstance>();
   let keys: HotkeyShortcuts[] = [];
 
   const addKeys = (nextKeys: HotkeyShortcuts[]) => {
     keys = [...keys, ...nextKeys];
 
     nextKeys.forEach((k) => {
-      if (!k.disabled) {
-        const mousetrap = k.ref?.current ? Mousetrap(k.ref.current) : Mousetrap;
-        mousetrap.bind(k.keys, k.callback, k.action);
+      if (k.disabled) {
+        return;
+      }
+
+      if (k.ref) {
+        if (!k.ref.current) {
+          // exit early if ref is provided but null
+          // we do not want to attach global event handlers in this case
+          return;
+        }
+
+        const element = k.ref.current;
+
+        if (!mousetraps.has(element)) {
+          mousetraps.set(element, new Mousetrap(element));
+        }
+
+        mousetraps.get(element)!.bind(k.keys, k.callback, k.action);
+      } else {
+        if (!mousetraps.get(undefined)) {
+          mousetraps.set(undefined, new Mousetrap());
+        }
+
+        mousetraps.get(undefined)!.bind(k.keys, k.callback, k.action);
       }
     });
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
+    // remove keys from the array
     keys = keys.filter((k) => !nextKeys.includes(k));
-    nextKeys.forEach((s) => Mousetrap.unbind(s.keys, s.action));
+
+    // unbind mousetrap events
+    nextKeys.forEach((k) => {
+      if (k.ref) {
+        if (!k.ref.current) {
+          return;
+        }
+
+        mousetraps.get(k.ref.current)?.unbind(k.keys, k.action);
+      } else {
+        mousetraps.get(undefined)?.unbind(k.keys, k.action);
+      }
+    });
+
+    // drop mousetrap instances that have no keys attached anymore
+    for (const [element] of mousetraps) {
+      if (element === undefined) {
+        if (keys.some((k) => k.ref === undefined)) {
+          continue;
+        }
+      } else {
+        if (keys.some((k) => k.ref?.current === element)) {
+          continue;
+        }
+      }
+
+      mousetraps.delete(element);
+    }
   };
 
   return () => {
@@ -42,11 +92,7 @@ const createStateHook = () => {
       setState(keys);
     }, []);
 
-    return [state, addKeys, removeKeys] as [
-      HotkeyShortcuts[],
-      (keys: HotkeyShortcuts[]) => void,
-      (keys: HotkeyShortcuts[]) => void
-    ];
+    return [state, addKeys, removeKeys] as const;
   };
 };
 

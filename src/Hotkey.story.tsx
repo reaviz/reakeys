@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
 
 export default {
@@ -112,6 +112,7 @@ export const Nested = () => {
 };
 
 export const Focus = () => {
+  const [counter, setCounter] = useState(0);
   const elmRef = useRef<any>(null);
   const elmRef2 = useRef<any>(null);
 
@@ -119,7 +120,7 @@ export const Focus = () => {
     {
       name: 'Test 3',
       keys: 'SHIFT+C',
-      callback: () => alert('first'),
+      callback: () => alert(`first, counter: ${counter}`),
       ref: elmRef,
     },
   ]);
@@ -128,13 +129,27 @@ export const Focus = () => {
     {
       name: 'Test 3',
       keys: 'SHIFT+C',
-      callback: () => alert('second'),
+      callback: () => alert(`second, counter: ${counter}`),
       ref: elmRef2,
     },
   ]);
 
   return (
     <div>
+      <button
+        type="button"
+        onClick={() => setCounter((currentCounter) => currentCounter - 1)}
+      >
+        -1
+      </button>
+      {counter}
+      <button
+        type="button"
+        onClick={() => setCounter((currentCounter) => currentCounter + 1)}
+      >
+        +1
+      </button>
+      <br />
       <span ref={elmRef} tabIndex={-1}>
         focus me and press SHIFT+C
       </span>
@@ -169,6 +184,56 @@ export const Action = () => {
     <div>
       Press f to pay respects
       <br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+export const Asynchronous = () => {
+  const elmRef = useRef<HTMLDivElement | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const hotkeys = useHotkeys([
+    {
+      name: 'Loaded',
+      keys: 'l',
+      callback: () => alert('Hey!'),
+      action: 'keyup',
+      ref: elmRef,
+    },
+  ]);
+
+  useEffect(() => {
+    if (loaded) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setLoaded(true);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, [loaded]);
+
+  return (
+    <div>
+      {loaded
+        ? 'Loaded'
+        : 'Loading (pressing "l" is disabled until the element is shown and focused)...'}
+      <button type="button" onClick={() => setLoaded(false)} disabled={!loaded}>
+        reload
+      </button>
+      <br />
+      {loaded && (
+        <div ref={elmRef} tabIndex={-1}>
+          Click me and press "l"
+        </div>
+      )}
       <pre>
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
