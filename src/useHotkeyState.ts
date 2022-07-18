@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useState } from 'react';
 import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
 
-export type HotkeyShortcuts = {
+export interface HotkeyShortcuts {
   name: string;
   category?: string;
   description?: string;
@@ -11,7 +11,7 @@ export type HotkeyShortcuts = {
   disabled?: boolean;
   callback: (e: ExtendedKeyboardEvent, combo: string) => void;
   action?: 'keypress' | 'keydown' | 'keyup';
-};
+}
 
 /**
  * Creates a global state singleton.
