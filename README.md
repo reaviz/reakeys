@@ -90,11 +90,9 @@ a dialog using [realayers](https://github.com/reaviz/realayers):
 ```jsx
 import React, { useState, FC, useCallback, useMemo } from 'react';
 import { Dialog } from 'realayers';
-import { useHotkeys } from 'reakeys';
+import { useHotkeys, getHotkeyText } from 'reakeys';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
-
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
 export const HotkeyCombos: FC = () => {
   // useHotkeys returns the same object if the hotkeys haven't changed, meaning
@@ -125,7 +123,7 @@ export const HotkeyCombos: FC = () => {
 
   const renderKeyCode = useCallback(keyCode => {
     const wrapped = Array.isArray(keyCode) ? keyCode : [keyCode];
-    const formatted = wrapped.map(k => k.replace('mod', isMac ? '⌘' : 'CTRL'));
+    const formatted = wrapped.map(k => getHotkeyText(k));
 
     return (
       <div className={css.keyComboContainer}>
@@ -208,6 +206,14 @@ export const HotkeyDialog: FC = () => {
     </Dialog>
   );
 };
+```
+
+You can also get a formatted version of the hotkey combo text:
+
+```ts
+import { getHotkeyText } from 'reakeys';
+
+getHotkeyText('mod+shift+a'); //=> '⌘+⇧+a'
 ```
 
 ## 🔭 Development
