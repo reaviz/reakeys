@@ -1,5 +1,9 @@
 import { RefObject, useEffect, useState } from 'react';
-import Mousetrap, { ExtendedKeyboardEvent, MousetrapInstance } from 'mousetrap';
+import Mousetrap, {
+  ExtendedKeyboardEvent,
+  MousetrapInstance,
+  MousetrapStatic,
+} from 'mousetrap';
 
 export interface HotkeyShortcuts {
   name: string;
@@ -17,7 +21,10 @@ export interface HotkeyShortcuts {
  * Creates a global state singleton.
  */
 const createStateHook = () => {
-  const mousetraps = new Map<HTMLElement | undefined, MousetrapInstance>();
+  const mousetraps = new Map<
+    HTMLElement | undefined,
+    MousetrapStatic | MousetrapInstance
+  >();
   let keys: HotkeyShortcuts[] = [];
 
   const bindKeys = (nextKeys: HotkeyShortcuts[]) => {
@@ -42,7 +49,7 @@ const createStateHook = () => {
         mousetraps.get(element)!.bind(k.keys, k.callback, k.action);
       } else {
         if (!mousetraps.get(undefined)) {
-          mousetraps.set(undefined, new Mousetrap());
+          mousetraps.set(undefined, Mousetrap);
         }
 
         mousetraps.get(undefined)!.bind(k.keys, k.callback, k.action);

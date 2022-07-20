@@ -1,3 +1,4 @@
+import Mousetrap from 'mousetrap';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
 
@@ -320,6 +321,28 @@ export const Modal = () => {
     <div>
       <Counter />
       <ModalToggle />
+    </div>
+  );
+};
+
+export const Trigger = () => {
+  const hotkeys = useHotkeys([
+    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
+  ]);
+
+  return (
+    <div>
+      <button type="button" onClick={() => Mousetrap.trigger('SHIFT+A')}>
+        Trigger shift+a
+      </button>
+      Press SHIFT + A<br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
     </div>
   );
 };
