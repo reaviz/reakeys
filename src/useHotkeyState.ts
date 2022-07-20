@@ -20,7 +20,9 @@ const createStateHook = () => {
   const mousetraps = new Map<HTMLElement | undefined, MousetrapInstance>();
   let keys: HotkeyShortcuts[] = [];
 
-  const bindKeys = (nextKeys: HotkeyShortcuts[]) => {
+  const addKeys = (nextKeys: HotkeyShortcuts[]) => {
+    keys = [...keys, ...nextKeys];
+
     nextKeys.forEach((k) => {
       if (k.disabled) {
         return;
@@ -48,12 +50,6 @@ const createStateHook = () => {
         mousetraps.get(undefined)!.bind(k.keys, k.callback, k.action);
       }
     });
-  };
-
-  const addKeys = (nextKeys: HotkeyShortcuts[]) => {
-    keys = [...keys, ...nextKeys];
-
-    bindKeys(nextKeys);
   };
 
   const removeKeys = (nextKeys: HotkeyShortcuts[]) => {
@@ -87,9 +83,6 @@ const createStateHook = () => {
 
       mousetraps.delete(element);
     }
-
-    // re-bind keys to restore listeners that were overwritten by the ones we just removed
-    bindKeys(keys);
   };
 
   return () => {
