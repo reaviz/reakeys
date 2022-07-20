@@ -244,3 +244,82 @@ export const Asynchronous = () => {
     </div>
   );
 };
+
+const Counter = () => {
+  const [counter, setCounter] = useState(0);
+  const hotkeys = useHotkeys([
+    {
+      name: 'Generate a random number',
+      keys: 'g',
+      callback: () => setCounter(Math.random()),
+    },
+  ]);
+
+  return (
+    <div>
+      <ol>
+        <li>Press "g" to generate a random number: {counter}</li>
+        <li>Open the modal, press "g" and close the modal</li>
+        <li>
+          Press "g" once the modal is closed, it should generate random number
+        </li>
+      </ol>
+      <br />
+      <pre>{JSON.stringify(hotkeys, null, 2)}</pre>
+    </div>
+  );
+};
+
+const ModalComponent = ({ onClose }: { onClose: () => void }) => {
+  const hotkeys = useHotkeys([
+    {
+      name: 'Modal shortcut',
+      keys: 'g',
+      callback: () => alert('This shortcut is bound through the modal'),
+    },
+  ]);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: `translate(-50%,-50%)`,
+        backgroundColor: `rgba(0,0,0,0.4)`,
+      }}
+    >
+      <div style={{ padding: '10px', backgroundColor: 'white' }}>
+        <button type="button" onClick={onClose}>
+          Close Modal
+        </button>
+        <br />
+        <p>Press g</p>
+        <br />
+        <pre>{JSON.stringify(hotkeys, null, 2)}</pre>
+      </div>
+    </div>
+  );
+};
+
+const ModalToggle = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button type="button" onClick={() => setIsOpen(true)}>
+        Open Modal
+      </button>
+      {isOpen && <ModalComponent onClose={() => setIsOpen(false)} />}
+    </div>
+  );
+};
+
+export const Modal = () => {
+  return (
+    <div>
+      <Counter />
+      <ModalToggle />
+    </div>
+  );
+};
