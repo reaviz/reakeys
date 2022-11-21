@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: github.repository == 'reaviz/realayers'
+    if: github.repository == 'reaviz/reakeys'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
