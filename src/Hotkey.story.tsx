@@ -176,7 +176,7 @@ export const Action = () => {
     {
       name: 'Pay respects',
       keys: 'f',
-      callback: (e) => alert("You've been promoted!"),
+      callback: () => alert("You've been promoted!"),
       action: 'keyup',
     },
   ]);
@@ -232,7 +232,7 @@ export const Asynchronous = () => {
       <br />
       {loaded && (
         <div ref={elmRef} tabIndex={-1}>
-          Click me and press "l"
+          Click me and press &quot;l`&quot;
         </div>
       )}
       <pre>
@@ -259,10 +259,11 @@ const Counter = () => {
   return (
     <div>
       <ol>
-        <li>Press "g" to generate a random number: {counter}</li>
-        <li>Open the modal, press "g" and close the modal</li>
+        <li>Press &quot;g&quot; to generate a random number: {counter}</li>
+        <li>Open the modal, press &quot;g&quot; and close the modal</li>
         <li>
-          Press "g" once the modal is closed, it should generate random number
+          Press &quot;g&quot; once the modal is closed, it should generate
+          random number
         </li>
       </ol>
       <br />

@@ -27,7 +27,8 @@
     "suppressExcessPropertyErrors": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strict": true
+    "strict": true,
+    "ignoreDeprecations": "5.0"
   },
   "types": ["node"],
   "include": ["src/**/*", "demo/**/*", "types/*"],

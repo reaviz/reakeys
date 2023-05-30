@@ -2,7 +2,9 @@ let isMac: boolean = false;
 try {
   if (navigator) isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 } catch (e) {
+  console.warn(e);
 }
+
 export const MODIFIER_KEY = isMac ? '⌘' : 'CTRL';
 
 export function getHotkeyText(hotkey: string) {

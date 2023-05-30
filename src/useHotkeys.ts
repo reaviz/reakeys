@@ -14,7 +14,7 @@ export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
         removeKeys(shortcuts);
       }
     };
-  }, [shortcuts]);
+  }, [addKeys, removeKeys, shortcuts]);
 
   return useMemo(
     () =>
