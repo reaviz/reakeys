@@ -1,7 +1,7 @@
 {
   "name": "reakeys",
   "version": "2.0.0",
-  "description": "React Hotkeys Hooks using MouseTrap",
+  "description": "React Hotkeys Hooks",
   "scripts": {
     "build": "vite build --mode library",
     "build-storybook": "storybook build",
