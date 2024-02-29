@@ -6,7 +6,7 @@ export default {
 };
 
 export const Simple = () => {
-  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') }]);
+  useHotkeys([{ name: 'Simple', keys: 'shift+a', callback: () => alert('SHIFT + A pressed') }]);
 
   return (
     <div>
@@ -16,7 +16,7 @@ export const Simple = () => {
 };
 
 export const Input = () => {
-  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') }]);
+  useHotkeys([{ name: 'Input', keys: 'shift+a', callback: () => alert('SHIFT + A pressed') }]);
 
   return (
     <div>
@@ -30,7 +30,7 @@ export const Input = () => {
 export const Disable = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
 
-  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed'), disabled }]);
+  useHotkeys([{ name: 'Disable', keys: 'shift+a', callback: () => alert('SHIFT + A pressed'), disabled }]);
 
   return (
     <div>
@@ -45,7 +45,8 @@ export const Refs = () => {
 
   useHotkeys([
     {
-      keys: ['shift+a'],
+      name: 'InRefsput',
+      keys: 'shift+a',
       callback: () => {
         alert(`color: ${color}`);
       },
@@ -66,8 +67,8 @@ export const Refs = () => {
 
 export const Multiple = () => {
   useHotkeys([
-    { keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') },
-    { keys: ['meta+b'], callback: () => alert('META + B pressed') },
+    { name: 'Nested A', keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') },
+    { name: 'Nested B', keys: ['meta+b'], callback: () => alert('META + B pressed') },
   ]);
 
   return (
@@ -80,13 +81,13 @@ export const Multiple = () => {
 };
 
 const NestedComponent = () => {
-  useHotkeys([{ keys: ['meta+b'], callback: () => alert('META + B (child)') }]);
+  useHotkeys([{ name: 'Child', keys: ['meta+b'], callback: () => alert('META + B (child)') }]);
 
   return <h1>Press MOD + b</h1>;
 };
 
 export const Nested = () => {
-  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A (parent)') }]);
+  useHotkeys([{ name: 'Parent', keys: ['shift+a'], callback: () => alert('SHIFT + A (parent)') }]);
 
   return (
     <div>
@@ -103,11 +104,13 @@ export const Focus = () => {
 
   useHotkeys([
     {
+      name: 'Focus A',
       keys: ['shift+c'],
       callback: () => alert(`first, counter: ${counter}`),
       ref: elmRef,
     },
     {
+      name: 'Focus b',
       keys: ['shift+c'],
       callback: () => alert(`second, counter: ${counter}`),
       ref: elmRef2,
@@ -139,6 +142,7 @@ export const Focus = () => {
 export const Action = () => {
   useHotkeys([
     {
+      name: 'Action',
       keys: ['f'],
       callback: () => alert("You've been promoted!"),
       action: 'keyup',
@@ -153,6 +157,7 @@ export const Asynchronous = () => {
   const [loaded, setLoaded] = useState(false);
   useHotkeys([
     {
+      name: 'Asynchronous',
       keys: ['l'],
       callback: () => alert('Hey!'),
       action: 'keyup',
@@ -191,8 +196,10 @@ export const Asynchronous = () => {
 
 const Counter = () => {
   const [counter, setCounter] = useState(0);
+
   useHotkeys([
     {
+      name: 'Counter',
       keys: ['g'],
       callback: () => setCounter(Math.random()),
     },
@@ -212,6 +219,7 @@ const Counter = () => {
 const ModalComponent = ({ onClose }: { onClose: () => void }) => {
   useHotkeys([
     {
+      name: 'ModalComponent',
       keys: ['g'],
       callback: () => alert('This shortcut is bound through the modal'),
     },

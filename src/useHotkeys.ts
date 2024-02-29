@@ -1,17 +1,16 @@
-import { RefObject, useLayoutEffect } from 'react';
+import { RefObject, useLayoutEffect, useRef, useState } from 'react';
 import keys, { Callback, Handler, Key } from 'ctrl-keys';
 
+type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
+
 export interface HotkeyShortcut {
-  keys: [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
+  name: string;
+  keys: Key | Keys;
   ref?: RefObject<HTMLElement | null>;
   disabled?: boolean;
   callback: Callback;
   action?: 'keypress' | 'keydown' | 'keyup';
-  /** @deprecated */
-  name?: string;
-  /** @deprecated */
   description?: string;
-  /** @deprecated */
   category?: string;
 }
 
@@ -26,6 +25,10 @@ const keydownGlobalHandler = keys();
  */
 const handlers = new Map<HTMLElement, Handler>();
 
+const extractKeys = (keys: Key | Keys): Keys => {
+  return Array.isArray(keys) ? keys : [keys];
+};
+
 const filter = (callback: Callback) => (event: any) => {
   const target = event.target;
 
@@ -39,32 +42,32 @@ const filter = (callback: Callback) => (event: any) => {
 
 const registerGlobalShortcut = (shortcut: HotkeyShortcut) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
-    keypressGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
+    keypressGlobalHandler.add(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
   if (shortcut.action === 'keyup') {
-    keyupGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
+    keyupGlobalHandler.add(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
   if (shortcut.action === 'keydown') {
-    keydownGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
+    keydownGlobalHandler.add(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
 };
 
 const removeGlobalShortcut = (shortcut: HotkeyShortcut) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
-    keypressGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
+    keypressGlobalHandler.remove(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
   if (shortcut.action === 'keyup') {
-    keyupGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
+    keyupGlobalHandler.remove(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
   if (shortcut.action === 'keydown') {
-    keydownGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
+    keydownGlobalHandler.remove(...extractKeys(shortcut.keys), filter(shortcut.callback));
   }
 };
 
 const registerElementShortcut = (shortcut: HotkeyShortcut) => {
   const handler = keys();
 
-  handler.add(...shortcut.keys, filter(shortcut.callback));
+  handler.add(...extractKeys(shortcut.keys), filter(shortcut.callback));
 
   shortcut.ref?.current?.addEventListener(shortcut.action ?? 'keypress', handler.handle);
 
@@ -75,7 +78,7 @@ const removeElementShortcut = (shortcut: HotkeyShortcut) => {
   if (shortcut.ref?.current && !shortcut.disabled) {
     const handler = handlers.get(shortcut.ref?.current) as Handler;
 
-    handler.remove(...shortcut.keys, filter(shortcut.callback));
+    handler.remove(...extractKeys(shortcut.keys), filter(shortcut.callback));
 
     shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', handler.handle);
   }
@@ -114,9 +117,6 @@ export const useHotkeys = (shortcuts: HotkeyShortcut[]) => {
     // Remove all shortcuts on destroy
     return () => {
       shortcuts.map((shortcut) => {
-        if (shortcut.disabled) {
-          return;
-        }
         removeGlobalShortcut(shortcut);
         removeElementShortcut(shortcut);
       });
