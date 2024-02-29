@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/reaviz/reakeys#readme",
   "dependencies": {
-    "mousetrap": "^1.6.5"
+    "ctrl-keys": "^1.0.1"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -61,7 +61,6 @@
     "@storybook/react-vite": "^7.0.18",
     "@storybook/theming": "7.0.18",
     "@types/classnames": "^2.3.1",
-    "@types/mousetrap": "^1.6.11",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^5.43.0",

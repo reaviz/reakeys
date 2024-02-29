@@ -1,29 +1,112 @@
-import { useLayoutEffect, useMemo } from 'react';
-import { HotkeyShortcuts, useHotkeyState } from './useHotkeyState';
+import { RefObject, useLayoutEffect } from 'react';
+import keys, { Callback, Handler, Key } from 'ctrl-keys';
 
-export const useHotkeys = (shortcuts?: HotkeyShortcuts[]) => {
-  const [keys, addKeys, removeKeys] = useHotkeyState();
+export interface HotkeyShortcut {
+  keys: [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
+  ref?: RefObject<HTMLElement | null>;
+  disabled?: boolean;
+  callback: Callback;
+  action?: 'keypress' | 'keydown' | 'keyup';
+  /** @deprecated */
+  name?: string;
+  /** @deprecated */
+  description?: string;
+}
 
+let isGlobalListenersBinded = false;
+
+const keypressGlobalHandler = keys();
+const keyupGlobalHandler = keys();
+const keydownGlobalHandler = keys();
+
+/**
+ * Map of specific elements handlers
+ */
+const handlers = new Map<HTMLElement, Handler>();
+
+const registerGlobalShortcut = (shortcut: HotkeyShortcut) => {
+  if (!shortcut.action || shortcut.action === 'keypress') {
+    keypressGlobalHandler.add(...shortcut.keys, shortcut.callback);
+  }
+  if (shortcut.action === 'keyup') {
+    keyupGlobalHandler.add(...shortcut.keys, shortcut.callback);
+  }
+  if (shortcut.action === 'keydown') {
+    keydownGlobalHandler.add(...shortcut.keys, shortcut.callback);
+  }
+};
+
+const removeGlobalShortcut = (shortcut: HotkeyShortcut) => {
+  if (!shortcut.action || shortcut.action === 'keypress') {
+    keypressGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+  }
+  if (shortcut.action === 'keyup') {
+    keyupGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+  }
+  if (shortcut.action === 'keydown') {
+    keydownGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+  }
+};
+
+const registerElementShortcut = (shortcut: HotkeyShortcut) => {
+  const handler = keys();
+
+  handler.add(...shortcut.keys, shortcut.callback);
+
+  shortcut.ref?.current?.addEventListener(shortcut.action ?? 'keypress', handler.handle);
+
+  handlers.set(shortcut.ref?.current as HTMLElement, handler);
+};
+
+const removeElementShortcut = (shortcut: HotkeyShortcut) => {
+  if (shortcut.ref?.current && !shortcut.disabled) {
+    const handler = handlers.get(shortcut.ref?.current) as Handler;
+
+    handler.remove(...shortcut.keys, shortcut.callback);
+
+    shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', handler.handle);
+  }
+};
+
+export const useHotkeys = (shortcuts: HotkeyShortcut[]) => {
+  /**
+   * Register global listeners for "keypress", "keyup" and "keydown" events
+   */
   useLayoutEffect(() => {
-    if (shortcuts) {
-      addKeys(shortcuts);
+    if (!isGlobalListenersBinded && window !== undefined) {
+      window.addEventListener('keypress', keypressGlobalHandler.handle);
+      window.addEventListener('keyup', keyupGlobalHandler.handle);
+      window.addEventListener('keydown', keydownGlobalHandler.handle);
+
+      isGlobalListenersBinded = true;
     }
+  }, []);
 
-    return () => {
-      if (shortcuts) {
-        removeKeys(shortcuts);
+  /**
+   * Register shortcuts
+   */
+  useLayoutEffect(() => {
+    shortcuts.map((shortcut) => {
+      if (shortcut.disabled) {
+        return;
       }
-    };
-  }, [addKeys, removeKeys, shortcuts]);
 
-  return useMemo(
-    () =>
-      keys.reduce<HotkeyShortcuts[]>((agg, cur) => {
-        if (!agg.find((a) => a.keys === cur.keys && a.ref && cur.ref)) {
-          agg.push(cur);
+      if (shortcut.ref?.current) {
+        registerElementShortcut(shortcut);
+      } else if (!shortcut.ref) {
+        registerGlobalShortcut(shortcut);
+      }
+    });
+
+    // Remove all shortcuts on destroy
+    return () => {
+      shortcuts.map((shortcut) => {
+        if (shortcut.disabled) {
+          return;
         }
-        return agg;
-      }, []),
-    [keys]
-  );
+        removeGlobalShortcut(shortcut);
+        removeElementShortcut(shortcut);
+      });
+    };
+  }, [shortcuts]);
 };

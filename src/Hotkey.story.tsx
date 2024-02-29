@@ -1,4 +1,3 @@
-import Mousetrap from 'mousetrap';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
 
@@ -7,20 +6,24 @@ export default {
 };
 
 export const Simple = () => {
-  const hotkeys = useHotkeys([
-    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
-  ]);
+  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') }]);
 
   return (
     <div>
       Press SHIFT + A<br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
+    </div>
+  );
+};
+
+export const Disable = () => {
+  const [disabled, setDisabled] = useState<boolean>(false);
+
+  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed'), disabled }]);
+
+  return (
+    <div>
+      Press SHIFT + A<br />
+      <button onClick={() => setDisabled(!disabled)}>{!disabled ? 'Disable' : 'Enable'}</button>
     </div>
   );
 };
@@ -28,10 +31,9 @@ export const Simple = () => {
 export const Refs = () => {
   const [color, setColor] = useState('blue');
 
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Test',
-      keys: 'SHIFT+A',
+      keys: ['shift+a'],
       callback: () => {
         alert(`color: ${color}`);
       },
@@ -46,68 +48,38 @@ export const Refs = () => {
       <button type="button" onClick={() => setColor('yellow')}>
         Change Color
       </button>
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 };
 
 export const Multiple = () => {
-  const hotkeys = useHotkeys([
-    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
-  ]);
-
   useHotkeys([
-    { name: 'Test 2', keys: 'mod+b', callback: () => alert('baller') },
+    { keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') },
+    { keys: ['meta+b'], callback: () => alert('META + B pressed') },
   ]);
 
   return (
     <div>
-      Press SHIFT + A<br />
-      Press MOD + b<br />
+      Press SHIFT + A
       <br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
+      Press META + B
     </div>
   );
 };
 
 const NestedComponent = () => {
-  useHotkeys([
-    { name: 'Test 2', keys: 'mod+b', callback: () => alert('baller') },
-  ]);
+  useHotkeys([{ keys: ['meta+b'], callback: () => alert('META + B (child)') }]);
 
   return <h1>Press MOD + b</h1>;
 };
 
 export const Nested = () => {
-  const hotkeys = useHotkeys([
-    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
-  ]);
+  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A (parent)') }]);
 
   return (
     <div>
       Press SHIFT + A<br />
       <NestedComponent />
-      <br />
-      <br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 };
@@ -117,19 +89,14 @@ export const Focus = () => {
   const elmRef = useRef<any>(null);
   const elmRef2 = useRef<any>(null);
 
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Test 3',
-      keys: 'SHIFT+C',
+      keys: ['shift+c'],
       callback: () => alert(`first, counter: ${counter}`),
       ref: elmRef,
     },
-  ]);
-
-  useHotkeys([
     {
-      name: 'Test 3',
-      keys: 'SHIFT+C',
+      keys: ['shift+c'],
       callback: () => alert(`second, counter: ${counter}`),
       ref: elmRef2,
     },
@@ -137,17 +104,11 @@ export const Focus = () => {
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => setCounter((currentCounter) => currentCounter - 1)}
-      >
+      <button type="button" onClick={() => setCounter((currentCounter) => currentCounter - 1)}>
         -1
       </button>
       {counter}
-      <button
-        type="button"
-        onClick={() => setCounter((currentCounter) => currentCounter + 1)}
-      >
+      <button type="button" onClick={() => setCounter((currentCounter) => currentCounter + 1)}>
         +1
       </button>
       <br />
@@ -159,50 +120,28 @@ export const Focus = () => {
       <span ref={elmRef2} tabIndex={-1}>
         focus me and press SHIFT+C
       </span>
-      <br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 };
 
 export const Action = () => {
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Pay respects',
-      keys: 'f',
+      keys: ['f'],
       callback: () => alert("You've been promoted!"),
       action: 'keyup',
     },
   ]);
 
-  return (
-    <div>
-      Press f to pay respects
-      <br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
-    </div>
-  );
+  return <div>Press "f" to pay respects</div>;
 };
 
 export const Asynchronous = () => {
   const elmRef = useRef<HTMLDivElement | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Loaded',
-      keys: 'l',
+      keys: ['l'],
       callback: () => alert('Hey!'),
       action: 'keyup',
       ref: elmRef,
@@ -223,35 +162,26 @@ export const Asynchronous = () => {
 
   return (
     <div>
-      {loaded
-        ? 'Loaded'
-        : 'Loading (pressing "l" is disabled until the element is shown and focused)...'}
+      {loaded ? 'Loaded' : 'Loading (pressing "l" is disabled until the element is shown and focused)...'}
+      <br />
       <button type="button" onClick={() => setLoaded(false)} disabled={!loaded}>
         reload
       </button>
       <br />
       {loaded && (
         <div ref={elmRef} tabIndex={-1}>
-          Click me and press &quot;l`&quot;
+          Click me and press &quot;l&quot;
         </div>
       )}
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 };
 
 const Counter = () => {
   const [counter, setCounter] = useState(0);
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Generate a random number',
-      keys: 'g',
+      keys: ['g'],
       callback: () => setCounter(Math.random()),
     },
   ]);
@@ -261,22 +191,16 @@ const Counter = () => {
       <ol>
         <li>Press &quot;g&quot; to generate a random number: {counter}</li>
         <li>Open the modal, press &quot;g&quot; and close the modal</li>
-        <li>
-          Press &quot;g&quot; once the modal is closed, it should generate
-          random number
-        </li>
+        <li>Press &quot;g&quot; once the modal is closed, it should generate random number</li>
       </ol>
-      <br />
-      <pre>{JSON.stringify(hotkeys, null, 2)}</pre>
     </div>
   );
 };
 
 const ModalComponent = ({ onClose }: { onClose: () => void }) => {
-  const hotkeys = useHotkeys([
+  useHotkeys([
     {
-      name: 'Modal shortcut',
-      keys: 'g',
+      keys: ['g'],
       callback: () => alert('This shortcut is bound through the modal'),
     },
   ]);
@@ -297,8 +221,6 @@ const ModalComponent = ({ onClose }: { onClose: () => void }) => {
         </button>
         <br />
         <p>Press g</p>
-        <br />
-        <pre>{JSON.stringify(hotkeys, null, 2)}</pre>
       </div>
     </div>
   );
@@ -322,28 +244,6 @@ export const Modal = () => {
     <div>
       <Counter />
       <ModalToggle />
-    </div>
-  );
-};
-
-export const Trigger = () => {
-  const hotkeys = useHotkeys([
-    { name: 'Test', keys: 'SHIFT+A', callback: () => alert('holla') },
-  ]);
-
-  return (
-    <div>
-      <button type="button" onClick={() => Mousetrap.trigger('SHIFT+A')}>
-        Trigger shift+a
-      </button>
-      Press SHIFT + A<br />
-      <pre>
-        {JSON.stringify(
-          hotkeys.map(({ ref: element, ...rest }) => rest),
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 };
