@@ -12,6 +12,7 @@ export interface HotkeyShortcut {
   action?: 'keypress' | 'keydown' | 'keyup';
   description?: string;
   category?: string;
+  hidden?: boolean;
 }
 
 let isGlobalListenersBinded = false;
