@@ -11,6 +11,8 @@ export interface HotkeyShortcut {
   name?: string;
   /** @deprecated */
   description?: string;
+  /** @deprecated */
+  category?: string;
 }
 
 let isGlobalListenersBinded = false;
