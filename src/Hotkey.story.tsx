@@ -6,7 +6,7 @@ export default {
 };
 
 export const Simple = () => {
-  const hotkeys = useHotkeys([{ name: 'Simple', keys: 'shift+a', callback: () => alert('SHIFT + A pressed') }]);
+  const hotkeys = useHotkeys([{ name: 'Simple', keys: 'SHIFT+A', callback: () => alert('SHIFT + A pressed') }]);
 
   return (
     <div>
@@ -23,7 +23,7 @@ export const Simple = () => {
 };
 
 export const Input = () => {
-  const hotkeys = useHotkeys([{ name: 'Input', keys: 'shift+a', callback: () => alert('SHIFT + A pressed') }]);
+  const hotkeys = useHotkeys([{ name: 'Input', keys: 'SHIFT+A', callback: () => alert('SHIFT + A pressed') }]);
 
   return (
     <div>
@@ -44,7 +44,7 @@ export const Input = () => {
 export const Disable = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
 
-  const hotkeys = useHotkeys([{ name: 'Disable', keys: 'shift+a', callback: () => alert('SHIFT + A pressed'), disabled }]);
+  const hotkeys = useHotkeys([{ name: 'Disable', keys: 'SHIFT+A', callback: () => alert('SHIFT + A pressed'), disabled }]);
 
   return (
     <div>
@@ -67,7 +67,7 @@ export const Refs = () => {
   const hotkeys = useHotkeys([
     {
       name: 'Refs',
-      keys: 'shift+a',
+      keys: 'SHIFT+A',
       callback: () => {
         alert(`color: ${color}`);
       },
@@ -95,8 +95,8 @@ export const Refs = () => {
 
 export const Multiple = () => {
   const hotkeys = useHotkeys([
-    { name: 'Nested A', keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') },
-    { name: 'Nested B', keys: ['meta+b'], callback: () => alert('META + B pressed') },
+    { name: 'Nested A', keys: ['SHIFT+A'], callback: () => alert('SHIFT + A pressed') },
+    { name: 'Nested B', keys: ['META+B'], callback: () => alert('META + B pressed') },
   ]);
 
   return (
@@ -117,13 +117,13 @@ export const Multiple = () => {
 };
 
 const NestedComponent = () => {
-  useHotkeys([{ name: 'Child', keys: ['meta+b'], callback: () => alert('META + B (child)') }]);
+  useHotkeys([{ name: 'Child', keys: ['META+B'], callback: () => alert('META + B (child)') }]);
 
-  return <h1>Press MOD + b</h1>;
+  return <h1>Press META + B</h1>;
 };
 
 export const Nested = () => {
-  const hotkeys = useHotkeys([{ name: 'Parent', keys: ['shift+a'], callback: () => alert('SHIFT + A (parent)') }]);
+  const hotkeys = useHotkeys([{ name: 'Parent', keys: ['SHIFT+A'], callback: () => alert('SHIFT + A (parent)') }]);
 
   return (
     <div>
@@ -149,13 +149,13 @@ export const Focus = () => {
   const hotkeys = useHotkeys([
     {
       name: 'Focus A',
-      keys: ['shift+c'],
+      keys: ['SHIFT+C'],
       callback: () => alert(`first, counter: ${counter}`),
       ref: elmRef,
     },
     {
       name: 'Focus b',
-      keys: ['shift+c'],
+      keys: ['SHIFT+C'],
       callback: () => alert(`second, counter: ${counter}`),
       ref: elmRef2,
     },
@@ -195,7 +195,7 @@ export const Action = () => {
   const hotkeys = useHotkeys([
     {
       name: 'Action',
-      keys: ['f'],
+      keys: ['F'],
       callback: () => alert("You've been promoted!"),
       action: 'keyup',
     },
@@ -222,7 +222,7 @@ export const Asynchronous = () => {
   useHotkeys([
     {
       name: 'Asynchronous',
-      keys: ['l'],
+      keys: ['L'],
       callback: () => alert('Hey!'),
       action: 'keyup',
       ref: elmRef,
@@ -243,7 +243,7 @@ export const Asynchronous = () => {
 
   return (
     <div>
-      {loaded ? 'Loaded' : 'Loading (pressing "l" is disabled until the element is shown and focused)...'}
+      {loaded ? 'Loaded' : 'Loading (pressing "L" is disabled until the element is shown and focused)...'}
       <br />
       <button type="button" onClick={() => setLoaded(false)} disabled={!loaded}>
         reload
@@ -264,7 +264,7 @@ const Counter = () => {
   useHotkeys([
     {
       name: 'Counter',
-      keys: ['g'],
+      keys: ['G'],
       callback: () => setCounter(Math.random()),
     },
   ]);
@@ -284,7 +284,7 @@ const ModalComponent = ({ onClose }: { onClose: () => void }) => {
   useHotkeys([
     {
       name: 'ModalComponent',
-      keys: ['g'],
+      keys: ['G'],
       callback: () => alert('This shortcut is bound through the modal'),
     },
   ]);

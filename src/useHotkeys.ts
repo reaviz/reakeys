@@ -5,7 +5,7 @@ type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
 export interface HotkeyShortcuts {
   name: string;
-  keys: Key | Keys;
+  keys: string | string[];
   ref?: RefObject<HTMLElement | null>;
   disabled?: boolean;
   callback: Callback;
@@ -27,8 +27,8 @@ const keydownGlobalHandler = keys();
 const handlers = new Map<HTMLElement, Handler>();
 let hotkeys: HotkeyShortcuts[] = [];
 
-const extractKeys = (keys: Key | Keys): Keys => {
-  return Array.isArray(keys) ? keys : [keys];
+const extractKeys = (keys: string | string[]): Keys => {
+  return (Array.isArray(keys) ? keys.map((key) => key.toLowerCase()) : [keys.toLowerCase()]) as Keys;
 };
 
 const focusInputWrapper = (callback: Callback) => (event: any) => {
