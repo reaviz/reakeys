@@ -1,7 +1,7 @@
 <div align="center">
   <h1>⌨️ reakeys</h1>
   <br />
-  React Hook for Mousetrap Hotkeys
+  React Hook for Ctrl-keys Hotkeys
   <br /><br />
   <a href="https://github.com/reaviz/reakeys/workflows/build/">
     <img src="https://github.com/reaviz/reakeys/workflows/build/badge.svg?branch=master" />
@@ -12,7 +12,7 @@
   <a href="https://npm.im/reakeys">
     <img src="https://badgen.net/npm/dw/reakeys" />
   </a>
-  <a href="https://github.com/realayers/reakeys/blob/master/LICENSE">
+  <a href="https://github.com/reaviz/reakeys/blob/master/LICENSE">
     <img src="https://badgen.now.sh/badge/license/apache2" />
   </a>
   <a href="https://bundlephobia.com/result?p=reakeys">
@@ -85,11 +85,11 @@ const hotkeys = useHotkeys();
 
 This is useful for creating a dialog to present the user
 with all the options. Below is an example of how to make
-a dialog using [realayers](https://github.com/reaviz/realayers):
+a dialog using [reablocks](https://github.com/reaviz/reablocks):
 
 ```jsx
 import React, { useState, FC, useCallback, useMemo } from 'react';
-import { Dialog } from 'realayers';
+import { Dialog } from 'reablocks';
 import { useHotkeys, getHotkeyText } from 'reakeys';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
