@@ -15,6 +15,18 @@ export const Simple = () => {
   );
 };
 
+export const Input = () => {
+  useHotkeys([{ keys: ['shift+a'], callback: () => alert('SHIFT + A pressed') }]);
+
+  return (
+    <div>
+      Press SHIFT + A (shouldn't trigger if input is focused)
+      <br />
+      <input />
+    </div>
+  );
+};
+
 export const Disable = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
 

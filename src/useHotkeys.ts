@@ -24,34 +24,45 @@ const keydownGlobalHandler = keys();
  */
 const handlers = new Map<HTMLElement, Handler>();
 
+const filter = (callback: Callback) => (event: any) => {
+  const target = event.target;
+
+  const isInput = target.tagName === 'INPUT' && !['checkbox', 'radio', 'range', 'button', 'file', 'reset', 'submit', 'color'].includes(target.type);
+  if (target.isContentEditable || ((isInput || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') && !target.readOnly)) {
+    return;
+  }
+
+  return callback(event);
+};
+
 const registerGlobalShortcut = (shortcut: HotkeyShortcut) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
-    keypressGlobalHandler.add(...shortcut.keys, shortcut.callback);
+    keypressGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
   }
   if (shortcut.action === 'keyup') {
-    keyupGlobalHandler.add(...shortcut.keys, shortcut.callback);
+    keyupGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
   }
   if (shortcut.action === 'keydown') {
-    keydownGlobalHandler.add(...shortcut.keys, shortcut.callback);
+    keydownGlobalHandler.add(...shortcut.keys, filter(shortcut.callback));
   }
 };
 
 const removeGlobalShortcut = (shortcut: HotkeyShortcut) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
-    keypressGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+    keypressGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
   }
   if (shortcut.action === 'keyup') {
-    keyupGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+    keyupGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
   }
   if (shortcut.action === 'keydown') {
-    keydownGlobalHandler.remove(...shortcut.keys, shortcut.callback);
+    keydownGlobalHandler.remove(...shortcut.keys, filter(shortcut.callback));
   }
 };
 
 const registerElementShortcut = (shortcut: HotkeyShortcut) => {
   const handler = keys();
 
-  handler.add(...shortcut.keys, shortcut.callback);
+  handler.add(...shortcut.keys, filter(shortcut.callback));
 
   shortcut.ref?.current?.addEventListener(shortcut.action ?? 'keypress', handler.handle);
 
@@ -62,7 +73,7 @@ const removeElementShortcut = (shortcut: HotkeyShortcut) => {
   if (shortcut.ref?.current && !shortcut.disabled) {
     const handler = handlers.get(shortcut.ref?.current) as Handler;
 
-    handler.remove(...shortcut.keys, shortcut.callback);
+    handler.remove(...shortcut.keys, filter(shortcut.callback));
 
     shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', handler.handle);
   }
