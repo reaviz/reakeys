@@ -3,7 +3,7 @@ import keys, { Callback, Handler, Key } from 'ctrl-keys';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
-export interface HotkeyShortcut {
+export interface HotkeyShortcuts {
   name: string;
   keys: Key | Keys;
   ref?: RefObject<HTMLElement | null>;
@@ -25,7 +25,7 @@ const keydownGlobalHandler = keys();
  * Map of specific elements handlers
  */
 const handlers = new Map<HTMLElement, Handler>();
-let hotkeys: HotkeyShortcut[] = [];
+let hotkeys: HotkeyShortcuts[] = [];
 
 const extractKeys = (keys: Key | Keys): Keys => {
   return Array.isArray(keys) ? keys : [keys];
@@ -42,7 +42,7 @@ const focusInputWrapper = (callback: Callback) => (event: any) => {
   return callback(event);
 };
 
-const registerGlobalShortcut = (shortcut: HotkeyShortcut) => {
+const registerGlobalShortcut = (shortcut: HotkeyShortcuts) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
     keypressGlobalHandler.add(...extractKeys(shortcut.keys), shortcut.callback);
   }
@@ -54,7 +54,7 @@ const registerGlobalShortcut = (shortcut: HotkeyShortcut) => {
   }
 };
 
-const removeGlobalShortcut = (shortcut: HotkeyShortcut) => {
+const removeGlobalShortcut = (shortcut: HotkeyShortcuts) => {
   if (!shortcut.action || shortcut.action === 'keypress') {
     keypressGlobalHandler.remove(...extractKeys(shortcut.keys), shortcut.callback);
   }
@@ -66,7 +66,7 @@ const removeGlobalShortcut = (shortcut: HotkeyShortcut) => {
   }
 };
 
-const registerElementShortcut = (shortcut: HotkeyShortcut) => {
+const registerElementShortcut = (shortcut: HotkeyShortcuts) => {
   const handler = keys();
 
   handler.add(...extractKeys(shortcut.keys), shortcut.callback);
@@ -76,7 +76,7 @@ const registerElementShortcut = (shortcut: HotkeyShortcut) => {
   handlers.set(shortcut.ref?.current as HTMLElement, handler);
 };
 
-const removeElementShortcut = (shortcut: HotkeyShortcut) => {
+const removeElementShortcut = (shortcut: HotkeyShortcuts) => {
   if (shortcut.ref?.current && !shortcut.disabled) {
     const handler = handlers.get(shortcut.ref?.current) as Handler;
 
@@ -86,8 +86,8 @@ const removeElementShortcut = (shortcut: HotkeyShortcut) => {
   }
 };
 
-export const useHotkeys = (shortcuts: HotkeyShortcut[] = []) => {
-  const [registered, setRegistered] = useState<HotkeyShortcut[]>([]);
+export const useHotkeys = (shortcuts: HotkeyShortcuts[] = []) => {
+  const [registered, setRegistered] = useState<HotkeyShortcuts[]>([]);
   /**
    * Register global listeners for "keypress", "keyup" and "keydown" events
    */
