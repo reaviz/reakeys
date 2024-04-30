@@ -1,6 +1,6 @@
 {
   "name": "reakeys",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "React Hotkeys Hooks",
   "scripts": {
     "build": "vite build --mode library",
@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/reaviz/reakeys#readme",
   "dependencies": {
-    "ctrl-keys": "^1.0.1"
+    "@reaviz/ctrl-keys": "^1.0.0"
   },
   "peerDependencies": {
     "react": ">=16",
