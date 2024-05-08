@@ -1,15 +1,22 @@
-let isMac: boolean = false;
-try {
-  isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-} catch {
-  // Ignore
+type ModifierKey = '⌘' | 'CTRL';
+
+function isMac(): boolean {
+  try {
+    return navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  } catch {
+    return false;
+  }
 }
 
-export const MODIFIER_KEY = isMac ? '⌘' : 'CTRL';
+function getModifierKey(): ModifierKey {
+  isMac() ? '⌘' : 'CTRL'
+}
+
+export const MODIFIER_KEY = getModifierKey();
 
 export function getHotkeyText(hotkey: string) {
   return hotkey
-    .replace('modifier', MODIFIER_KEY)
-    .replace('mod', MODIFIER_KEY)
+    .replace('modifier', getModifierKey())
+    .replace('mod', getModifierKey())
     .replace('shift', '⇧');
 }
