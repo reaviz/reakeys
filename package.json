@@ -1,6 +1,6 @@
 {
   "name": "reakeys",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "React Hotkeys Hooks",
   "scripts": {
     "build": "vite build --mode library",
