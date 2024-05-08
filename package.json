@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/reaviz/reakeys#readme",
   "dependencies": {
-    "@reaviz/ctrl-keys": "^1.0.0"
+    "ctrl-keys": "^1.0.2"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -74,7 +74,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^35.0.0",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",

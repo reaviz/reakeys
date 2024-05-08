@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
-import keys, { Callback, Handler, Key } from '@reaviz/ctrl-keys';
+import keys, { Callback, Handler, Key } from 'ctrl-keys';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 

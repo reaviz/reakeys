@@ -9,14 +9,11 @@ function isMac(): boolean {
 }
 
 function getModifierKey(): ModifierKey {
-  isMac() ? '⌘' : 'CTRL'
+  return isMac() ? '⌘' : 'CTRL';
 }
 
 export const MODIFIER_KEY = getModifierKey();
 
 export function getHotkeyText(hotkey: string) {
-  return hotkey
-    .replace('modifier', getModifierKey())
-    .replace('mod', getModifierKey())
-    .replace('shift', '⇧');
+  return hotkey.replace('modifier', getModifierKey()).replace('mod', getModifierKey()).replace('shift', '⇧');
 }
