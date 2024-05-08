@@ -1,8 +1,8 @@
 let isMac: boolean = false;
 try {
-  if (navigator) isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-} catch (e) {
-  console.warn(e);
+  isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+} catch {
+  // Ignore
 }
 
 export const MODIFIER_KEY = isMac ? '⌘' : 'CTRL';
