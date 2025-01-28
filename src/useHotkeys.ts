@@ -1,5 +1,6 @@
 import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
-import keys, { Callback, Handler, Key } from 'ctrl-keys';
+import type { Callback, HandlerInterface, Key } from 'ctrl-keys';
+import keys from 'ctrl-keys';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
@@ -24,7 +25,7 @@ const keydownGlobalHandler = keys();
 /**
  * Map of specific elements handlers
  */
-const handlers = new Map<HTMLElement, Handler>();
+const handlers = new Map<HTMLElement, HandlerInterface>();
 let hotkeys: HotkeyShortcuts[] = [];
 
 const extractKeys = (keys: string | string[]): Keys => {
@@ -78,10 +79,9 @@ const registerElementShortcut = (shortcut: HotkeyShortcuts) => {
 
 const removeElementShortcut = (shortcut: HotkeyShortcuts) => {
   if (shortcut.ref?.current && !shortcut.disabled) {
-    const handler = handlers.get(shortcut.ref?.current) as Handler;
+    const handler = handlers.get(shortcut.ref?.current) as HandlerInterface;
 
-    handler.remove(...extractKeys(shortcut.keys), shortcut.callback);
-
+    handler?.remove(...extractKeys(shortcut.keys), shortcut.callback);
     shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', handler.handle);
   }
 };
