@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 import type { Callback, HandlerInterface, Key } from 'ctrl-keys';
-import keys from 'ctrl-keys';
+import { keys } from 'ctrl-keys';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
