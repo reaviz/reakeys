@@ -1,6 +1,6 @@
 type ModifierKey = '⌘' | 'CTRL';
 
-function isMac(): boolean {
+export function isMac(): boolean {
   try {
     return navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   } catch {
@@ -15,5 +15,5 @@ function getModifierKey(): ModifierKey {
 export const MODIFIER_KEY = getModifierKey();
 
 export function getHotkeyText(hotkey: string) {
-  return hotkey.replace('modifier', getModifierKey()).replace('mod', getModifierKey()).replace('shift', '⇧');
+  return hotkey.toLowerCase().replace('modifier', getModifierKey()).replace('mod', getModifierKey()).replace('shift', '⇧');
 }

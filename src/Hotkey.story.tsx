@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from './useHotkeys';
+import { getHotkeyText } from './utils';
 
 export default {
   title: 'Hotkeys',
@@ -97,6 +98,7 @@ export const Multiple = () => {
   const hotkeys = useHotkeys([
     { name: 'Nested A', keys: ['SHIFT+A'], callback: () => alert('SHIFT + A pressed') },
     { name: 'Nested B', keys: ['META+B'], callback: () => alert('META + B pressed') },
+    { name: 'Nested F', keys: ['META+F'], callback: () => alert('META + F pressed') },
   ]);
 
   return (
@@ -104,6 +106,37 @@ export const Multiple = () => {
       Press SHIFT + A
       <br />
       Press META + B
+      <br />
+      <pre>
+        {JSON.stringify(
+          hotkeys.map(({ ref: element, ...rest }) => rest),
+          null,
+          2
+        )}
+      </pre>
+    </div>
+  );
+};
+
+export const ModifierAlias = () => {
+  const hotkeys = useHotkeys([
+    { name: 'Mod + A', keys: ['MOD+A'], action: 'keydown', callback: () => alert('Mod + A pressed') },
+    {
+      name: 'Mod + F',
+      keys: ['MOD+F'],
+      action: 'keydown',
+      callback: (event) => {
+        event?.preventDefault();
+        alert('Mod + F pressed');
+      },
+    },
+  ]);
+
+  return (
+    <div>
+      Press {getHotkeyText('MOD+A')}
+      <br />
+      Press {getHotkeyText('MOD+F')}
       <br />
       <pre>
         {JSON.stringify(
