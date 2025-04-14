@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 import type { Callback, HandlerInterface, Key } from 'ctrl-keys';
 import { keys } from 'ctrl-keys';
+import { isMac } from './utils';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
@@ -29,7 +30,10 @@ const handlers = new Map<HTMLElement, HandlerInterface>();
 let hotkeys: HotkeyShortcuts[] = [];
 
 const extractKeys = (keys: string | string[]): Keys => {
-  return (Array.isArray(keys) ? keys.map((key) => key.toLowerCase()) : [keys.toLowerCase()]) as Keys;
+  const normalizedKeys = Array.isArray(keys) ? keys.map((key) => key.toLowerCase()) : [keys.toLowerCase()];
+  const modKey = isMac() ? 'meta' : 'ctrl';
+
+  return normalizedKeys.map((key) => key.replace('modifier', modKey).replace('mod', modKey)) as Keys;
 };
 
 const focusInputWrapper = (callback: Callback) => (event: any) => {
