@@ -7,7 +7,7 @@ import storybook from 'eslint-plugin-storybook';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist/', 'storybook-static/', 'node_modules/'] },
+  { ignores: ['dist/', 'storybook-static/', 'node_modules/', 'coverage/'] },
   js.configs.recommended,
   react.configs.flat.recommended,
   reactHooks.configs.flat.recommended,
@@ -16,6 +16,8 @@ export default tseslint.config(
   {
     files: ['**/*.{js,ts,tsx}'],
     languageOptions: {
+      // parser only — typescript-eslint recommended rule sets are deliberately
+      // NOT enabled, matching the old .eslintrc.js lint surface
       parser: tseslint.parser,
       sourceType: 'module',
       globals: {
