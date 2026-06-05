@@ -31,7 +31,7 @@ reakeys/
 ├── dist/                  # Build output (generated)
 ├── vite.config.ts         # Vite build configuration
 ├── tsconfig.json          # TypeScript configuration
-├── .eslintrc.js           # ESLint configuration
+├── eslint.config.js       # ESLint flat config
 ├── .prettierrc            # Prettier configuration
 └── package.json           # Project dependencies and scripts
 ```
@@ -59,34 +59,34 @@ Simple re-export of `useHotkeys` and `utils`.
 
 ```bash
 # Install dependencies
-yarn install
+npm install
 
 # Start Storybook dev server (port 9009)
-yarn start
+npm start
 
 # Build library for production
-yarn build
+npm run build
 
 # Build Storybook
-yarn build-storybook
+npm run build-storybook
 
 # Run tests
-yarn test
+npm test
 
 # Run tests with coverage
-yarn test:coverage
+npm run test:coverage
 
 # Lint code
-yarn lint
+npm run lint
 
 # Fix lint issues
-yarn lint:fix
+npm run lint:fix
 
 # Format code with Prettier
-yarn prettier
+npm run prettier
 
 # Run Chromatic visual tests
-yarn chromatic
+npm run chromatic
 ```
 
 ## Architecture & Key Concepts
@@ -133,8 +133,8 @@ Shortcuts are automatically disabled when:
 - JSX: React
 
 ### ESLint
-- Extends: `eslint:recommended`, `plugin:react/recommended`, `plugin:react-hooks/recommended`, `prettier`
-- Parser: `@typescript-eslint/parser`
+- ESLint 10 flat config (`eslint.config.js`)
+- Composes: `@eslint/js` recommended, `typescript-eslint` (parser-only), `eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-storybook`, `eslint-config-prettier`
 
 ### Prettier
 - Semicolons: Yes
@@ -148,17 +148,18 @@ Uses Husky + lint-staged to run Prettier on staged files before commit.
 - Test framework: Vitest
 - Environment: jsdom
 - Currently configured with `--passWithNoTests` flag
+- Coverage provider: `@vitest/coverage-v8`
 - Stories in `*.story.tsx` files serve as visual integration tests via Chromatic
 
 ## Build System
 
-Uses Vite with two modes:
-1. **Library mode** (`yarn build`): Builds for npm distribution
+Uses Vite 8 with two modes:
+1. **Library mode** (`npm run build`): Builds for npm distribution
    - Output formats: ES module (`dist/index.js`) and UMD (`dist/index.umd.cjs`)
    - Generates TypeScript declarations
    - External peer dependencies (React, React DOM)
 
-2. **Development mode** (`yarn start`): Runs Storybook for development
+2. **Development mode** (`npm start`): Runs Storybook for development
 
 ## Common Tasks for AI Assistants
 
@@ -167,8 +168,8 @@ Uses Vite with two modes:
 2. Update `src/utils.ts` for utility functions
 3. Add story to `src/Hotkey.story.tsx` for demonstration
 4. Export new items from `src/index.ts`
-5. Run `yarn lint:fix` and `yarn prettier`
-6. Test with `yarn test` and `yarn start`
+5. Run `npm run lint:fix` and `npm run prettier`
+6. Test with `npm test` and `npm start`
 
 ### Debugging Shortcuts
 - Check if shortcut uses correct key format (lowercase recommended)
@@ -201,6 +202,7 @@ export const MyStory = () => {
 
 ## CI/CD
 
+- Runs on Node 22 (`actions/checkout@v5`, `actions/setup-node@v5`, `npm ci`)
 - **build.yml**: Runs on PRs to master - builds library and Storybook
 - **release.yml**: Release automation
 - **npm-publish.yml**: Publishes to npm registry
