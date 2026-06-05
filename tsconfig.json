@@ -2,9 +2,8 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "lib": ["es2017", "dom"],
-    "typeRoots": ["./types", "./node_modules/@types"],
     "jsx": "react",
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
@@ -14,7 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "rootDirs": ["src", "docs"],
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noUnusedLocals": false,
@@ -23,14 +21,8 @@
     "outDir": "./dist",
     "skipLibCheck": true,
     "sourceMap": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "suppressExcessPropertyErrors": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": true,
-    "ignoreDeprecations": "5.0"
+    "strict": true
   },
-  "types": ["node"],
-  "include": ["src/**/*", "demo/**/*", "types/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
