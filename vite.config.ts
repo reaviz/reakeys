@@ -30,19 +30,11 @@ export default defineConfig(({ mode }) =>
           copyPublicDir: false,
           lib: {
             entry: resolve('src', 'index.ts'),
-            name: 'reakeys',
+            formats: ['es'],
             fileName: 'index',
           },
           rollupOptions: {
             external: ['react', 'react-dom', 'react/jsx-runtime', 'ctrl-keys'],
-            output: {
-              globals: {
-                react: 'React',
-                'react-dom': 'ReactDOM',
-                'react/jsx-runtime': 'ReactJSXRuntime',
-                'ctrl-keys': 'ctrlKeys',
-              },
-            },
           },
         },
       }

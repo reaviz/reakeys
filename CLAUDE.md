@@ -155,7 +155,7 @@ Uses Husky + lint-staged to run Prettier on staged files before commit.
 
 Uses Vite 8 with two modes:
 1. **Library mode** (`npm run build`): Builds for npm distribution
-   - Output formats: ES module (`dist/index.js`) and UMD (`dist/index.umd.cjs`)
+   - Output format: ES module only (`dist/index.js`) — UMD/CJS output was removed
    - Generates TypeScript declarations
    - External peer dependencies (React, React DOM)
 
