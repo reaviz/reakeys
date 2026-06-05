@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) =>
           dts({
             insertTypesEntry: true,
             include: ['src'],
-            exclude: ['src/**/*.story.tsx'],
+            exclude: ['src/**/*.story.tsx', 'src/**/*.test.tsx'],
           }),
           checker({
             typescript: true,
