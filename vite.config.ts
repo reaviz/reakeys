@@ -9,53 +9,53 @@ import dts from 'vite-plugin-dts';
 export default defineConfig(({ mode }) =>
   mode === 'library'
     ? {
-      plugins: [
-        react(),
-        dts({
-          insertTypesEntry: true,
-          include: ['src'],
-          exclude: ['src/**/*.story.tsx']
-        }),
-        checker({
-          typescript: true
-        })
-      ],
-      test: {
-        globals: true,
-        environment: 'jsdom'
-      },
-      build: {
-        minify: false,
-        sourcemap: true,
-        copyPublicDir: false,
-        lib: {
-          entry: resolve('src', 'index.ts'),
-          name: 'reakeys',
-          fileName: 'index'
+        plugins: [
+          react(),
+          dts({
+            insertTypesEntry: true,
+            include: ['src'],
+            exclude: ['src/**/*.story.tsx'],
+          }),
+          checker({
+            typescript: true,
+          }),
+        ],
+        test: {
+          globals: true,
+          environment: 'jsdom',
         },
-        rollupOptions: {
-          external: ['react', 'react-dom', 'react/jsx-runtime', 'ctrl-keys'],
-          output: {
-            globals: {
-              react: 'React',
-              'react-dom': 'ReactDOM',
-              'react/jsx-runtime': 'ReactJSXRuntime',
-              'ctrl-keys': 'ctrlKeys'
-            }
-          }
-        }
+        build: {
+          minify: false,
+          sourcemap: true,
+          copyPublicDir: false,
+          lib: {
+            entry: resolve('src', 'index.ts'),
+            name: 'reakeys',
+            fileName: 'index',
+          },
+          rollupOptions: {
+            external: ['react', 'react-dom', 'react/jsx-runtime', 'ctrl-keys'],
+            output: {
+              globals: {
+                react: 'React',
+                'react-dom': 'ReactDOM',
+                'react/jsx-runtime': 'ReactJSXRuntime',
+                'ctrl-keys': 'ctrlKeys',
+              },
+            },
+          },
+        },
       }
-    }
     : {
-      plugins: [
-        react(),
-        checker({
-          typescript: true
-        })
-      ],
-      test: {
-        globals: true,
-        environment: 'jsdom'
-      }
-    }
+        plugins: [
+          react(),
+          checker({
+            typescript: true,
+          }),
+        ],
+        test: {
+          globals: true,
+          environment: 'jsdom',
+        },
+      },
 );

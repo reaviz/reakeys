@@ -8,12 +8,12 @@
     "chromatic": "npx chromatic --project-token 7cu2w5t1r8a --auto-accept-changes",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "lint:prettier": "prettier --loglevel warn --write 'src/**/*.{ts,tsx,js,jsx}'",
-    "prettier": "prettier --loglevel warn --write 'src/**/*.{ts,tsx,js,jsx}'",
+    "lint:prettier": "prettier --log-level warn --write 'src/**/*.{ts,tsx,js,jsx}'",
+    "prettier": "prettier --log-level warn --write 'src/**/*.{ts,tsx,js,jsx}'",
     "start": "storybook dev -p 9009",
     "test": "vitest --passWithNoTests",
     "test:coverage": "vitest run --coverage --passWithNoTests",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "type": "module",
   "types": "dist/index.d.ts",
@@ -74,10 +74,10 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-storybook": "^10.4.2",
     "globals": "^17.6.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
-    "lint-staged": "^13.2.2",
-    "prettier": "^2.8.8",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "storybook": "^10.4.2",
@@ -90,13 +90,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }

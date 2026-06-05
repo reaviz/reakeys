@@ -6,9 +6,9 @@ const preview: Preview = {
     layout: 'centered',
     docs: {
       theme,
-      codePanel: true
-    }
-  }
+      codePanel: true,
+    },
+  },
 };
 
 export default preview;

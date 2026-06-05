@@ -16,7 +16,7 @@ export const Simple = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -35,7 +35,7 @@ export const Input = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -55,7 +55,7 @@ export const Disable = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, disabled, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -87,7 +87,7 @@ export const Refs = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -111,7 +111,7 @@ export const Multiple = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -142,7 +142,7 @@ export const ModifierAlias = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -167,7 +167,7 @@ export const Nested = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -217,7 +217,7 @@ export const Focus = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -242,7 +242,7 @@ export const Action = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </>
@@ -366,7 +366,7 @@ export const Modal = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
