@@ -28,7 +28,7 @@ export const Input = () => {
 
   return (
     <div>
-      Press SHIFT + A (shouldn't trigger if input is focused)
+      Press SHIFT + A (shouldn&apos;t trigger if input is focused)
       <br />
       <input />
       <pre>
@@ -236,7 +236,7 @@ export const Action = () => {
 
   return (
     <>
-      <div>Press "f" to pay respects</div>
+      <div>Press &quot;f&quot; to pay respects</div>
       <br />
       <pre>
         {JSON.stringify(

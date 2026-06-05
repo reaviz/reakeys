@@ -6,8 +6,8 @@
     "build": "vite build --mode library",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token 7cu2w5t1r8a --auto-accept-changes",
-    "lint": "eslint --ext js,ts,tsx",
-    "lint:fix": "eslint --ext js,ts,tsx --fix src",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
     "lint:prettier": "prettier --loglevel warn --write 'src/**/*.{ts,tsx,js,jsx}'",
     "prettier": "prettier --loglevel warn --write 'src/**/*.{ts,tsx,js,jsx}'",
     "start": "storybook dev -p 9009",
@@ -43,6 +43,11 @@
     "hotkeys"
   ],
   "license": "Apache-2.0",
+  "overrides": {
+    "eslint-plugin-react": {
+      "eslint": "$eslint"
+    }
+  },
   "bugs": {
     "url": "https://github.com/reaviz/reakeys/issues"
   },
@@ -55,19 +60,20 @@
     "react-dom": ">=16"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-docs": "^10.4.2",
     "@storybook/react-vite": "^10.4.2",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.8",
     "chromatic": "^17.2.0",
-    "eslint": "^8.42.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.6.12",
+    "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-storybook": "^10.4.2",
+    "globals": "^17.6.0",
     "husky": "^8.0.3",
     "jsdom": "^29.1.1",
     "lint-staged": "^13.2.2",
@@ -76,8 +82,9 @@
     "react-dom": "^19.2.7",
     "storybook": "^10.4.2",
     "typescript": "~5.9.3",
+    "typescript-eslint": "^8.60.1",
     "vite": "^8.0.16",
-    "vite-plugin-checker": "^0.11.0",
+    "vite-plugin-checker": "^0.14.1",
     "vite-plugin-dts": "^5.0.2",
     "vitest": "^4.1.8"
   },
