@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) =>
         react(),
         dts({
           insertTypesEntry: true,
-          include: ['src']
+          include: ['src'],
+          exclude: ['src/**/*.story.tsx']
         }),
         checker({
           typescript: true
