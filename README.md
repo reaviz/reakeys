@@ -34,7 +34,7 @@
 Install via NPM:
 
 ```
-yarn add reakeys
+npm install reakeys
 ```
 
 Then in your component, just add the `useHotkeys` hook
@@ -221,8 +221,8 @@ getHotkeyText('mod+shift+a'); //=> '⌘+⇧+a'
 If you want to run reakeys locally, its super easy!
 
 - Clone the repo
-- `yarn install`
-- `yarn start`
+- `npm install`
+- `npm start`
 - Browser opens to Storybook page
 
 ## ❤️ Contributors

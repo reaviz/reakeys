@@ -16,7 +16,7 @@ export const Simple = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -28,14 +28,14 @@ export const Input = () => {
 
   return (
     <div>
-      Press SHIFT + A (shouldn't trigger if input is focused)
+      Press SHIFT + A (shouldn&apos;t trigger if input is focused)
       <br />
       <input />
       <pre>
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -55,7 +55,7 @@ export const Disable = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, disabled, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -87,7 +87,7 @@ export const Refs = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -111,7 +111,7 @@ export const Multiple = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -142,7 +142,7 @@ export const ModifierAlias = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -167,7 +167,7 @@ export const Nested = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -217,7 +217,7 @@ export const Focus = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>
@@ -236,13 +236,13 @@ export const Action = () => {
 
   return (
     <>
-      <div>Press "f" to pay respects</div>
+      <div>Press &quot;f&quot; to pay respects</div>
       <br />
       <pre>
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </>
@@ -366,7 +366,7 @@ export const Modal = () => {
         {JSON.stringify(
           hotkeys.map(({ ref: element, ...rest }) => rest),
           null,
-          2
+          2,
         )}
       </pre>
     </div>

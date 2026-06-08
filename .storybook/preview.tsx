@@ -1,14 +1,9 @@
-import { Preview } from '@storybook/react';
-import theme from './theme';
+import { Preview } from '@storybook/react-vite';
 
 const preview: Preview = {
   parameters: {
     layout: 'centered',
-    controls: { hideNoControlsWarning: true },
-    docs: {
-      theme
-    },
-  }
+  },
 };
 
 export default preview;

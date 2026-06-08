@@ -7,13 +7,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: "18"
+          node-version: '22'
+          cache: npm
       - run: npm ci
       - run: npm run build
       - uses: JS-DevTools/npm-publish@v2
+        id: publish
         with:
           token: ${{ secrets.NPM_TOKEN }}
       - if: ${{ steps.publish.outputs.type }}

@@ -11,20 +11,21 @@ jobs:
     if: github.repository == 'reaviz/reakeys'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
         with:
-          version: 18.x
+          node-version: '22'
+          cache: npm
 
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build Storybook
-        run: yarn build-storybook
+        run: npm run build-storybook
 
       - name: Publish Storybook to GH Pages
         if: success()
@@ -37,4 +38,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Chromatic
-        run: yarn chromatic
+        run: npm run chromatic
