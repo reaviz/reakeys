@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 import type { Callback, HandlerInterface, Key } from 'ctrl-keys';
 import { keys } from 'ctrl-keys';
-import { isMac } from './utils';
+import { ignoreKeylessEvents, isMac } from './utils';
 
 type Keys = [Key] | [Key, Key] | [Key, Key, Key] | [Key, Key, Key, Key];
 
@@ -26,7 +26,7 @@ const keydownGlobalHandler = keys();
 /**
  * Map of specific elements handlers
  */
-const handlers = new Map<HTMLElement, HandlerInterface>();
+const handlers = new Map<HTMLElement, { handler: HandlerInterface; listener: (event: KeyboardEvent) => void }>();
 let hotkeys: HotkeyShortcuts[] = [];
 
 const extractKeys = (keys: string | string[]): Keys => {
@@ -76,17 +76,20 @@ const registerElementShortcut = (shortcut: HotkeyShortcuts) => {
 
   handler.add(...extractKeys(shortcut.keys), shortcut.callback);
 
-  shortcut.ref?.current?.addEventListener(shortcut.action ?? 'keypress', handler.handle);
+  const listener = ignoreKeylessEvents(handler.handle);
+  shortcut.ref?.current?.addEventListener(shortcut.action ?? 'keypress', listener);
 
-  handlers.set(shortcut.ref?.current as HTMLElement, handler);
+  handlers.set(shortcut.ref?.current as HTMLElement, { handler, listener });
 };
 
 const removeElementShortcut = (shortcut: HotkeyShortcuts) => {
   if (shortcut.ref?.current && !shortcut.disabled) {
-    const handler = handlers.get(shortcut.ref?.current) as HandlerInterface;
+    const entry = handlers.get(shortcut.ref?.current);
 
-    handler?.remove(...extractKeys(shortcut.keys), shortcut.callback);
-    shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', handler.handle);
+    entry?.handler.remove(...extractKeys(shortcut.keys), shortcut.callback);
+    if (entry) {
+      shortcut.ref?.current?.removeEventListener(shortcut.action ?? 'keypress', entry.listener);
+    }
   }
 };
 
@@ -97,9 +100,9 @@ export const useHotkeys = (shortcuts: HotkeyShortcuts[] = []) => {
    */
   useLayoutEffect(() => {
     if (!isGlobalListenersBinded && window !== undefined) {
-      window.addEventListener('keypress', keypressGlobalHandler.handle);
-      window.addEventListener('keyup', keyupGlobalHandler.handle);
-      window.addEventListener('keydown', keydownGlobalHandler.handle);
+      window.addEventListener('keypress', ignoreKeylessEvents(keypressGlobalHandler.handle));
+      window.addEventListener('keyup', ignoreKeylessEvents(keyupGlobalHandler.handle));
+      window.addEventListener('keydown', ignoreKeylessEvents(keydownGlobalHandler.handle));
 
       isGlobalListenersBinded = true;
     }
